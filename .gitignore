@@ -1,4 +1,7 @@
-# Local-only README screenshots (kept on disk, not committed)
-onepage-hero.png
-onepage-messy.png
-onepage-elegant.png
+# Local-only assets and deploy artifacts (kept on disk / hosted, never committed)
+*.png
+*.pdf
+site/
+.netlify/
+.DS_Store
+node_modules/

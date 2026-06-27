@@ -6,15 +6,7 @@
 
 Onepage turns the resume you can already write in a text box into a clean, print ready document. No account, no fifty field form, no build step, and no file upload. It is a single HTML file that runs entirely in your browser.
 
-[![License: MIT](https://img.shields.io/badge/license-MIT-2563eb?style=flat-square)](LICENSE)
-[![Build](https://img.shields.io/badge/build-no%20build%20step-22c55e?style=flat-square)](#run-it-locally)
-[![Dependencies](https://img.shields.io/badge/dependencies-zero-22c55e?style=flat-square)](#whats-inside)
-[![Source](https://img.shields.io/badge/source-one%20HTML%20file-8b5cf6?style=flat-square)](index.html)
-[![Tech](https://img.shields.io/badge/vanilla-HTML%20%7C%20CSS%20%7C%20JS-f59e0b?style=flat-square)](#whats-inside)
-[![Privacy](https://img.shields.io/badge/data-100%25%20in%20your%20browser-0ea5e9?style=flat-square)](#privacy-by-design)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ec4899?style=flat-square)](#contributing)
-
-  <img src="onepage-hero.png" alt="The Onepage editor showing plain text on the left and a live, formatted resume on the right" width="900">
+<img src="onepage-hero.png" alt="The Onepage editor showing plain text on the left and a live, formatted resume on the right" width="900">
 
 <sub>Type or paste on the left. Watch a formatted, one page resume build itself on the right.</sub>
 
