@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Onepage | Text in, Resume out</title>
+<meta name="description" content="Type your resume as plain text (or paste a messy one) and get a polished, print-perfect PDF in seven templates. No signup, nothing uploaded, and it all runs in your browser. Share a resume with a single link." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235563ff'/%3E%3Crect x='8.5' y='6.5' width='15' height='19' rx='2.5' fill='white'/%3E%3Crect x='11' y='10' width='10' height='1.8' rx='.9' fill='%235563ff'/%3E%3Crect x='11' y='13.6' width='10' height='1.6' rx='.8' fill='%23c7ccff'/%3E%3Crect x='11' y='17.2' width='10' height='1.6' rx='.8' fill='%23c7ccff'/%3E%3Crect x='11' y='20.8' width='6.5' height='1.6' rx='.8' fill='%23c7ccff'/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #090d14; --bg2: #151c29; --panel: #161d29; --ink: #f4f7ff; --muted: #aab3c4;
+    --line: #303949; --line2: #465266; --accent: #7d8cff; --accent2: #202839;
+    --pa: #26428b; /* resume accent (paper) */
+    --editor-w: 44%;
+    --editor-font: 15px;
+    --resume-zoom: 1;
+    --radius: 10px;
+  }
+  ::selection { background: rgba(109,124,255,.30); }
+  button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible,
+  .select-button:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  ::-webkit-scrollbar { width: 11px; height: 11px; }
+  ::-webkit-scrollbar-thumb { background: var(--line2); border-radius: 7px; border: 3px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: #3a4456; background-clip: padding-box; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); height: 100%; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  .bar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px;
+    padding: 10px 104px 10px 16px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(24,31,45,.98), rgba(14,20,31,.98));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 14px 34px -22px rgba(0,0,0,.95), 0 1px 0 rgba(255,255,255,.04) inset; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 9px; margin-right: 4px; }
+  .brand .mark { width: 28px; height: 28px; display: grid; place-items: center; }
+  .brand .mark svg { display: block; border-radius: 8px; box-shadow: 0 2px 10px rgba(85,99,255,.5); }
+  .brand .name { font-weight: 800; letter-spacing: -.4px; font-size: 16px; }
+  .brand .name small { font-weight: 500; color: #c1c8d6; font-size: 12px; margin-left: 7px; }
+  .bar .spacer { flex: 1; }
+  .group { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .sep { width: 1px; align-self: stretch; background: var(--line); margin: 2px 3px; }
+  label.lbl { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; }
+  select, button {
+    font: 500 13px inherit; cursor: pointer; color: var(--ink); height: 34px;
+    background: var(--accent2); border: 1px solid var(--line2); border-radius: var(--radius); padding: 0 11px;
+    transition: background .15s, border-color .15s, color .15s, transform .08s, box-shadow .15s;
+  }
+  button { display: inline-flex; align-items: center; gap: 6px; }
+  button svg { flex: none; opacity: .85; }
+  select {
+    -webkit-appearance: none; appearance: none; padding: 0 30px 0 11px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a92a4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
+  select:hover, button:hover { border-color: #5c6a82; color: #fff; background: #263247; }
+  button:active { transform: translateY(1px); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 2px 14px -3px rgba(109,124,255,.6); }
+  button.primary:hover { background: var(--accent); border-color: var(--accent); filter: brightness(1.08); }
+  button.primary svg { opacity: 1; }
+  button.ghost { background: transparent; }
+  button.info-button { color: #fbfcff; background: #202a3d; border-color: #596579; font-weight: 750; }
+  button.info-button:hover { background: #2b3650; border-color: #75839a; }
+  button.info-button svg { opacity: 1; color: #dce3ff; }
+  .bar .info-button { position: fixed; top: 10px; right: 16px; z-index: 25; }
+  #share { color: #fbfcff; background: #253149; border-color: #596579; font-weight: 700; }
+  #share:hover { background: #303d58; border-color: #75839a; }
+  #share svg { opacity: 1; color: #dce3ff; }
+  select.native-select {
+    position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;
+    border: 0; padding: 0; margin: 0; overflow: hidden;
+  }
+  .custom-select { position: relative; min-width: 136px; }
+  .custom-select.font { min-width: 190px; }
+  .custom-select.sample { min-width: 188px; }
+  .select-button { width: 100%; justify-content: space-between; gap: 10px; padding: 0 10px 0 12px; }
+  .select-value { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .select-chev { display: grid; place-items: center; width: 16px; height: 16px; color: var(--muted); transition: transform .15s, color .15s; }
+  .select-button:hover .select-chev, .custom-select.open .select-chev { color: #fff; }
+  .custom-select.open .select-chev { transform: rotate(180deg); }
+  .select-menu {
+    display: none; position: absolute; z-index: 60; top: calc(100% + 6px); left: 0;
+    min-width: 100%; width: max-content; max-width: min(360px, calc(100vw - 24px));
+    max-height: min(360px, calc(100vh - 96px)); overflow: auto; padding: 6px;
+    background: #182031; border: 1px solid #556176; border-radius: 8px;
+    box-shadow: 0 20px 46px -22px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .custom-select.open .select-menu { display: block; }
+  .select-menu.align-right { left: auto; right: 0; }
+  .select-group-label {
+    padding: 7px 9px 5px; color: #b9c2d1; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .7px;
+  }
+  .select-option {
+    position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    min-height: 30px; padding: 7px 22px 7px 9px; border-radius: 7px; cursor: pointer;
+    color: #eef3ff; font-size: 13px; line-height: 1.2; white-space: nowrap;
+  }
+  .select-option:hover, .select-option.active { background: #29344c; color: #fff; }
+  .select-option[aria-selected="true"] { color: #fff; font-weight: 700; }
+  .select-option[aria-selected="true"]::after {
+    content: ""; position: absolute; right: 9px; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(109,124,255,.16);
+  }
+  .dots { display: flex; gap: 6px; padding: 0 2px; }
+  .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; transition: .15s; }
+  .dot:hover { transform: scale(1.12); }
+  .dot.on { border-color: var(--ink); }
+  .dot.pick { -webkit-appearance: none; appearance: none; border: 2px dashed var(--line2); background: var(--accent2); }
+  .dot.pick:hover { border-color: var(--accent); }
+  .dot.pick::-webkit-color-swatch-wrapper { padding: 0; }
+  .dot.pick::-webkit-color-swatch { border: none; border-radius: 50%; }
+  .dot.pick::-moz-color-swatch { border: none; border-radius: 50%; }
+
+  .main {
+    display: grid; grid-template-columns: minmax(340px, var(--editor-w)) 10px minmax(420px, 1fr);
+    gap: 0; flex: 1; min-height: 0; padding: 10px; background: #090c12;
+  }
+  .pane {
+    min-height: 0; overflow: hidden; display: flex; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--line); box-shadow: 0 16px 40px -34px #000;
+  }
+  .pane:first-child { border-radius: 8px 0 0 8px; }
+  .pane:last-child { border-radius: 0 8px 8px 0; }
+  .pane-head {
+    flex: none; min-height: 44px; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 7px 10px 7px 13px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #161d29, #111722);
+  }
+  .pane-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .pane-title strong { font-size: 13px; letter-spacing: .2px; }
+  .pane-title span { color: var(--muted); font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pane-tools { display: flex; align-items: center; gap: 6px; flex: none; }
+  .tool-btn {
+    width: 30px; height: 30px; padding: 0; justify-content: center; border-radius: 8px;
+    font-weight: 750; font-size: 12px;
+  }
+  .tool-btn.wide { width: auto; padding: 0 9px; }
+  .tool-value { min-width: 44px; text-align: center; color: #cfd5e3; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .splitter {
+    position: relative; cursor: col-resize; background: #090c12; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .splitter::before {
+    content: ""; position: absolute; inset: 8px 3px; border-radius: 999px; background: var(--line2);
+    transition: background .15s, transform .15s;
+  }
+  .splitter:hover::before, .splitter.dragging::before { background: var(--accent); transform: scaleX(1.35); }
+  .editor { display: flex; flex-direction: column; min-height: 0; position: relative; }
+  .editor-wrap { position: relative; flex: 1; min-height: 0; background: #0c1018; cursor: text; }
+  .editor-highlights, textarea {
+    position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; border: none;
+    padding: 18px 20px 28px; font: var(--editor-font)/1.72 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    tab-size: 4; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal;
+  }
+  .editor-highlights {
+    z-index: 1; pointer-events: none; user-select: none; overflow: hidden; color: #f0f4fb;
+  }
+  .editor-highlights .tok-section { color: #9fb0ff; font-weight: 800; letter-spacing: .8px; }
+  .editor-highlights .tok-contact { color: #8ee6cb; }
+  .editor-highlights .tok-entry { color: #f2d38b; font-weight: 700; }
+  .editor-highlights .tok-date { color: #b7c0d4; }
+  .editor-highlights .tok-degree { color: #f0a8c0; }
+  .editor-highlights .tok-bullet { color: #e7eaf2; }
+  .editor-highlights .tok-label { color: #a8d4ff; font-weight: 700; }
+  textarea {
+    z-index: 2; resize: none; outline: none; overflow: auto; background: transparent; cursor: text;
+    color: rgba(255,255,255,.01); caret-color: #fff; -webkit-text-fill-color: rgba(255,255,255,.01);
+  }
+  #src:focus, #src:focus-visible { outline: none; }
+  textarea:placeholder-shown { color: var(--muted); -webkit-text-fill-color: var(--muted); }
+  textarea::placeholder { color: var(--muted); opacity: .7; }
+  .ed-foot { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    padding: 8px 16px; border-top: 1px solid var(--line); background: var(--panel);
+    font-size: 11.5px; color: var(--muted); }
+  .ed-foot .saved { display: flex; align-items: center; gap: 7px; }
+  .ed-foot .saved i { width: 7px; height: 7px; border-radius: 50%; background: #34d17f;
+    box-shadow: 0 0 0 3px rgba(52,209,127,.16); }
+  .ed-foot .hint {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    max-width: calc(100% - 260px); min-width: 0; text-align: center;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none;
+  }
+  .ed-foot .count { font-variant-numeric: tabular-nums; }
+
+  .preview-pane { min-width: 0; }
+  .preview {
+    overflow: auto; background: radial-gradient(130% 90% at 50% -10%, #1d2536, #080c13);
+    padding: 28px 24px; min-height: 0; flex: 1; touch-action: pan-x pan-y;
+  }
+  .paper-stage { position: relative; margin: 0 auto; min-width: 1px; min-height: 1px; }
+  .paper-wrap {
+    position: absolute; left: 50%; top: 0; width: 8.5in; transform: translateX(-50%) scale(var(--resume-zoom));
+    transform-origin: top center;
+  }
+
+  /* ===================== resume paper ===================== */
+  .paper {
+    position: relative; background: transparent; color: #1b1b1b; width: 8.5in; max-width: none; min-height: 11in;
+    margin: 0 auto; padding: 0.6in 0.65in; line-height: 1.4; border-radius: 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page-backgrounds { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .page-sheet {
+    position: absolute; left: 0; right: 0; background: #fff; border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.25), 0 12px 44px rgba(0,0,0,.45);
+  }
+  .page-spacer { display: block; pointer-events: none; margin: 0 !important; padding: 0 !important; list-style: none !important; }
+  .paper > :not(.page-backgrounds) { position: relative; z-index: 1; }
+  .paper [data-src-line] {
+    border-radius: 4px; cursor: pointer; padding: 1px 3px; margin: -1px -3px;
+    box-decoration-break: clone; -webkit-box-decoration-break: clone;
+    transition: background .11s ease-out, box-shadow .11s ease-out, filter .11s ease-out;
+  }
+  .paper [data-src-line]:hover, .paper [data-src-line].source-hover {
+    background: rgba(125,140,255,.14);
+    box-shadow: 0 0 0 2px rgba(125,140,255,.14);
+  }
+  .paper [data-src-line].source-flash {
+    background: rgba(255,218,121,.42);
+    box-shadow: 0 0 0 3px rgba(255,218,121,.24);
+  }
+  .paper [data-src-line] a { pointer-events: none; }
+  .paper, .paper li, .paper .r-para, .paper .r-title, .paper .r-sub, .paper .r-meta,
+  .paper .r-contact, .paper .r-headline, .paper a {
+    overflow-wrap: anywhere; word-break: normal; }
+  .paper .r-title, .paper .r-sub, .paper .r-meta { min-width: 0; }
+  .paper h1.r-name { margin: 0; font-size: 26px; letter-spacing: -.2px; }
+  .paper .r-headline { font-size: 14px; color: #444; margin-top: 3px; font-weight: 600; }
+  .paper.jake .r-headline, .paper.jakesans .r-headline { text-align: center; }
+  .paper .r-contact { font-size: 12.5px; color: #333; margin-top: 5px; }
+  .paper .r-contact a, .paper a { color: var(--pa); text-decoration: none; }
+  .paper h2.r-sec { font-size: 13px; margin: 16px 0 6px; }
+  .paper .r-entry { margin-top: 8px; }
+  .paper .r-row {
+    display: grid; grid-template-columns: minmax(0, 1fr) fit-content(42%);
+    column-gap: 14px; align-items: baseline;
+  }
+  .paper .r-title { font-weight: 700; }
+  .paper .r-meta { color: #555; font-size: 12.5px; white-space: normal; text-align: right; justify-self: end; max-width: 100%; }
+  .paper .r-sub { font-style: italic; color: #333; }
+  .paper ul { margin: 4px 0; padding-left: 18px; }
+  .paper li { margin: 2.5px 0; font-size: 13px; }
+  .paper .r-para { margin: 4px 0; font-size: 13px; }
+  .paper .r-label { font-weight: 700; }
+
+  /* ---- Modern: sans, left name, accent underline headers ---- */
+  .paper.modern { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .paper.modern h2.r-sec { text-transform: uppercase; letter-spacing: 1.2px; color: var(--pa); border-bottom: 1.5px solid var(--pa); padding-bottom: 3px; }
+
+  /* ---- Computer Modern: LaTeX-style serif, left, small-caps accent, justified ---- */
+  .paper.compute { font-family: "Latin Modern Roman", "CMU Serif", "Nimbus Roman", Georgia, "Times New Roman", serif; font-size: 13px; line-height: 1.32; }
+  .paper.compute h1.r-name { font-size: 21px; font-weight: 700; }
+  .paper.compute .r-contact { margin-top: 3px; }
+  .paper.compute .r-contact a, .paper.compute a { color: var(--pa); text-decoration: underline; }
+  .paper.compute h2.r-sec { font-variant: small-caps; text-transform: lowercase; letter-spacing: .4px; color: var(--pa); border-bottom: 1px solid var(--pa); padding-bottom: 1px; font-size: 15px; font-weight: 700; margin: 13px 0 4px; }
+  .paper.compute .r-meta { color: #111; }
+  .paper.compute .r-para, .paper.compute li { text-align: justify; }
+
+  /* ---- Jake's: classic LaTeX, centered name, small-caps black headers, italic meta ---- */
+  .paper.jake { font-family: "Latin Modern Roman", "CMU Serif", Georgia, "Times New Roman", serif; font-size: 13px; }
+  .paper.jake h1.r-name { text-align: center; font-size: 28px; font-weight: 700; letter-spacing: .3px; }
+  .paper.jake .r-contact { text-align: center; margin-top: 4px; }
+  .paper.jake a { color: #111; text-decoration: underline; }
+  .paper.jake h2.r-sec { font-variant: small-caps; text-transform: lowercase; font-size: 15px; font-weight: 700; color: #111; border-bottom: 1px solid #111; padding-bottom: 1px; letter-spacing: .4px; margin: 12px 0 4px; }
+  .paper.jake .r-meta { font-style: italic; color: #222; }
+
+  /* ---- Jake Sans: modern take, centered name, accent small-caps headers ---- */
+  .paper.jakesans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; }
+  .paper.jakesans h1.r-name { text-align: center; font-size: 27px; font-weight: 800; }
+  .paper.jakesans .r-contact { text-align: center; margin-top: 4px; color: #444; }
+  .paper.jakesans h2.r-sec { text-transform: uppercase; letter-spacing: 1.5px; font-size: 12px; font-weight: 700; color: var(--pa); border-bottom: 1.5px solid var(--pa); padding-bottom: 3px; margin: 14px 0 6px; }
+  .paper.jakesans .r-meta { color: #666; font-size: 12px; }
+  .paper.jakesans .r-sub { color: #444; }
+
+  /* ---- Minimal: airy sans, light grey section labels, no rules ---- */
+  .paper.minimal { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 0.62in 0.7in; }
+  .paper.minimal h1.r-name { font-weight: 600; font-size: 30px; letter-spacing: -.6px; }
+  .paper.minimal .r-headline { font-weight: 400; color: #555; }
+  .paper.minimal h2.r-sec { text-transform: uppercase; letter-spacing: 2.6px; font-size: 10.5px; color: #9a9aa2; border: none; font-weight: 600; margin: 16px 0 6px; }
+  .paper.minimal .r-meta { color: #888; }
+
+  /* ---- Compact: dense, fits a lot on one page ---- */
+  .paper.compact { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 12px; line-height: 1.34; padding: 0.45in 0.55in; }
+  .paper.compact h1.r-name { font-size: 21px; }
+  .paper.compact h2.r-sec { text-transform: uppercase; letter-spacing: .8px; font-size: 11px; color: var(--pa); border-bottom: 1px solid var(--pa); padding-bottom: 1px; margin: 11px 0 4px; }
+  .paper.compact .r-entry { margin-top: 5px; }
+  .paper.compact ul { margin: 2px 0; } .paper.compact li { margin: 1.5px 0; font-size: 12px; }
+  .paper.compact .r-para { font-size: 12px; margin: 2px 0; }
+
+  /* ---- Elegant: serif editorial, centered, italic accents ---- */
+  .paper.elegant { font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; padding: 0.7in 0.8in; }
+  .paper.elegant h1.r-name { text-align: center; font-weight: 600; font-size: 31px; letter-spacing: 1px; }
+  .paper.elegant .r-headline { text-align: center; font-style: italic; font-weight: 400; color: var(--pa); }
+  .paper.elegant .r-contact { text-align: center; }
+  .paper.elegant h2.r-sec { text-align: center; text-transform: uppercase; letter-spacing: 3px; font-size: 12px; color: #222; border: none; margin: 20px 0 9px; }
+  .paper.elegant h2.r-sec::after { content: ""; display: block; width: 38px; height: 1px; background: var(--pa); margin: 7px auto 0; }
+  .paper.elegant .r-meta { font-style: italic; color: #555; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 16px); z-index: 30;
+    background: #0c0d12; color: #fff; border: 1px solid var(--line); padding: 10px 16px;
+    border-radius: 10px; font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: .22s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .tour-backdrop {
+    position: fixed; inset: 0; z-index: 80; display: none; pointer-events: none;
+    background: transparent;
+  }
+  .tour-backdrop.show { display: block; }
+  .tour-spotlight {
+    position: fixed; border-radius: 14px; border: 2px solid rgba(155,166,255,.98);
+    box-shadow: 0 0 0 9999px rgba(4,7,12,.62), 0 0 0 5px rgba(125,140,255,.16), 0 0 34px rgba(125,140,255,.55);
+    transition: top .2s ease, left .2s ease, width .2s ease, height .2s ease;
+  }
+  .tour-card {
+    position: fixed; width: min(340px, calc(100vw - 28px)); padding: 14px;
+    border: 1px solid #566176; border-radius: 14px; color: var(--ink);
+    background: linear-gradient(180deg, #1a2231, #101722);
+    box-shadow: 0 24px 70px -28px rgba(0,0,0,.98), 0 0 0 1px rgba(255,255,255,.05) inset; pointer-events: auto;
+    transition: top .2s ease, left .2s ease;
+  }
+  .tour-card h3 { margin: 0 0 6px; font-size: 14px; }
+  .tour-card p { margin: 0; color: #c9d1df; font-size: 13px; line-height: 1.45; }
+  .tour-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 13px; }
+  .tour-progress { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .tour-buttons { display: flex; gap: 7px; }
+  @media (max-width: 820px) {
+    body { overflow: auto; }
+    .main { grid-template-columns: 1fr; height: auto; padding: 8px; gap: 8px; }
+    .pane, .pane:first-child, .pane:last-child { border-radius: 8px; }
+    .splitter { display: none; }
+    .editor-wrap { min-height: 320px; }
+    .preview { height: 70vh; }
+  }
+  @media (max-width: 560px) {
+    .paper .r-row { grid-template-columns: 1fr; row-gap: 1px; }
+    .paper .r-meta { justify-self: start; text-align: left; }
+  }
+  @media print {
+    body { overflow: visible; background: #fff; height: auto; }
+    .bar, .editor, .splitter, .pane-head, .toast, .tour-backdrop, .page-backgrounds, .page-spacer { display: none !important; }
+    .main { display: block; height: auto !important; min-height: 0 !important; padding: 0 !important; background: #fff !important; }
+    .preview-pane { display: block; border: none; box-shadow: none; }
+    .preview { overflow: visible; background: #fff; padding: 0; height: auto; }
+    .paper-stage { width: auto !important; height: auto !important; }
+    .paper-wrap { position: static !important; transform: none !important; width: auto !important; height: auto !important; }
+    /* Keep each template's own padding so print margins match the preview exactly. */
+    .paper { background: #fff; box-shadow: none; margin: 0 auto; width: auto; max-width: none; min-height: 0 !important; height: auto !important; }
+    @page { size: letter; margin: 0; }
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <div class="brand">
+      <span class="mark"><svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="url(#opg)"/>
+        <rect x="8.5" y="6.5" width="15" height="19" rx="2.5" fill="#fff"/>
+        <rect x="11" y="10" width="10" height="1.8" rx=".9" fill="#5563ff"/>
+        <rect x="11" y="13.6" width="10" height="1.6" rx=".8" fill="#c7ccff"/>
+        <rect x="11" y="17.2" width="10" height="1.6" rx=".8" fill="#c7ccff"/>
+        <rect x="11" y="20.8" width="6.5" height="1.6" rx=".8" fill="#c7ccff"/>
+        <defs><linearGradient id="opg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#8390ff"/><stop offset="1" stop-color="#5563ff"/></linearGradient></defs>
+      </svg></span>
+      <span class="name">Onepage <small>plain text in, clean resume out</small></span>
+    </div>
+    <div class="spacer"></div>
+    <div class="group">
+      <label class="lbl" for="tpl">Template</label>
+      <select id="tpl">
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="compact">Compact</option>
+        <option value="elegant">Elegant</option>
+        <option value="compute">Computer Modern</option>
+        <option value="jake">Jake's</option>
+        <option value="jakesans">Jake Sans</option>
+      </select>
+      <label class="lbl" for="font">Font</label>
+      <select id="font"></select>
+      <div class="dots" id="accents"></div>
+      <input type="color" id="accentPick" class="dot pick" value="#6d7cff" aria-label="Custom accent color" title="Custom accent color" />
+    </div>
+    <div class="sep"></div>
+    <div class="group">
+      <select id="sample" title="Load a sample resume">
+        <option value="" selected disabled hidden>Load sample…</option>
+        <option value="clean">Polished example</option>
+        <option value="messy">Messy paste (no formatting)</option>
+      </select>
+      <button id="share" aria-label="Copy a shareable link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copy link</button>
+      <button class="primary" id="export" aria-label="Export to PDF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export PDF</button>
+      <button class="info-button" id="infoBtn" type="button" aria-label="Show how Onepage works" title="Show how Onepage works"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Info</button>
+    </div>
+  </div>
+
+  <div class="main" id="main">
+    <section class="pane editor" aria-label="Text editor">
+      <div class="pane-head">
+        <div class="pane-title">
+          <strong>Text</strong>
+          <span id="editorStatus">Paste messy text or start from a sample</span>
+        </div>
+        <div class="pane-tools" aria-label="Text size">
+          <button class="tool-btn" id="textSmaller" type="button" aria-label="Smaller text" title="Smaller text">A-</button>
+          <button class="tool-btn" id="textLarger" type="button" aria-label="Larger text" title="Larger text">A+</button>
+        </div>
+      </div>
+      <div class="editor-wrap">
+        <pre class="editor-highlights" id="highlights" aria-hidden="true"></pre>
+        <textarea id="src" spellcheck="false" placeholder="Paste your resume here. Messy is fine, or pick a sample above."></textarea>
+      </div>
+      <div class="ed-foot">
+        <span class="saved"><i></i> Saved in your browser</span>
+        <span class="hint" id="cursorHint">Ready</span>
+        <span class="count" id="count"></span>
+      </div>
+    </section>
+    <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" aria-label="Resize editor and resume panes" tabindex="0"></div>
+    <section class="pane preview-pane" aria-label="Resume preview">
+      <div class="pane-head">
+        <div class="pane-title">
+          <strong>Resume</strong>
+          <span id="pageCount">1 page</span>
+        </div>
+        <div class="pane-tools" aria-label="Resume zoom">
+          <button class="tool-btn" id="zoomOut" type="button" aria-label="Zoom out" title="Zoom out">-</button>
+          <span class="tool-value" id="zoomLabel">100%</span>
+          <button class="tool-btn" id="zoomIn" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+          <button class="tool-btn wide" id="zoomFit" type="button" aria-label="Fit resume to pane" title="Fit resume to pane">Fit</button>
+        </div>
+      </div>
+      <div class="preview" id="preview">
+        <div class="paper-stage" id="paperStage">
+          <div class="paper-wrap" id="paperWrap">
+            <div class="paper modern" id="paper"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div class="tour-backdrop" id="tour" aria-hidden="true">
+    <div class="tour-spotlight" id="tourSpot"></div>
+    <div class="tour-card" id="tourCard" role="dialog" aria-live="polite" aria-labelledby="tourTitle">
+      <h3 id="tourTitle"></h3>
+      <p id="tourBody"></p>
+      <div class="tour-actions">
+        <span class="tour-progress" id="tourProgress"></span>
+        <div class="tour-buttons">
+          <button class="ghost" id="tourSkip" type="button">Skip</button>
+          <button class="ghost" id="tourBack" type="button">Back</button>
+          <button class="primary" id="tourNext" type="button">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+"use strict";
+
+/* ============================ config ============================ */
+const TEMPLATES = ["modern", "minimal", "compact", "elegant", "compute", "jake", "jakesans"];
+const ACCENTS = ["#26428b", "#8a4b10", "#0f766e", "#7a1f2b", "#1f2937"];
+
+const KNOWN = ["summary","objective","profile","about","professional summary","career summary","summary of qualifications",
+  "qualifications","experience","work experience","work history","professional experience","relevant experience",
+  "additional experience","employment","employment history","education","skills","technical skills","core skills",
+  "core competencies","key skills","areas of expertise","technical proficiencies","tools","projects","personal projects",
+  "awards","honors","awards & honors","certifications","certificates","publications","volunteer","volunteering",
+  "volunteer experience","leadership","leadership experience","activities","interests","languages","references",
+  "achievements","accomplishments","research","research experience","coursework","relevant coursework",
+  "extracurriculars","involvement","internships","contact","links","hobbies"];
+const KW = ["summary","objective","profile","experience","education","skills","projects","awards","honors",
+  "certifications","certificates","publications","leadership","activities","volunteer","interests","languages",
+  "references","achievements","accomplishments","research","coursework","extracurriculars","involvement",
+  "internships","employment","qualifications","contact","links","hobbies"];
+
+/* ============================ date / location detection ============================ */
+const MON = "(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\\.?";
+const SEASON = "(?:Spring|Summer|Fall|Autumn|Winter)";
+const Y = "(?:19|20)\\d{2}";
+const TOK = "(?:" + MON + "\\s*(?:" + Y + ")?|" + SEASON + "\\s*" + Y + "|" + Y + "|\\d{1,2}\\/(?:19|20)?\\d{2})";
+const SEP = "\\s*(?:[-\\u2013\\u2014]+|to|until|through|\\u2192)\\s*";
+const END = "(?:Present|Current|Now|Ongoing|" + TOK + ")";
+const DATE_TAIL = new RegExp("(" + TOK + SEP + END + "|" + TOK + ")\\s*$", "i");
+const DATE_ONLY = new RegExp("^(?:" + TOK + SEP + END + "|" + TOK + ")$", "i");
+const LOC_ONLY = /^(?:[A-Z][A-Za-z.\-]+(?:[ ][A-Z][A-Za-z.\-]+)*,\s*[A-Z]{2}|Remote|Hybrid|On-?site|Onsite)$/i;
+const LOC_TAIL = /[A-Z][A-Za-z.\-]+(?:[ ][A-Z][A-Za-z.\-]+)*,\s*[A-Z]{2}$|\b(?:Remote|Hybrid|On-?site|Onsite)$/;
+
+/* ============================ small helpers ============================ */
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+const RANGE_WORD_SEP_RE = /\s*(?:[\u2010-\u2014]+|--|\bto\b|\buntil\b|\bthrough\b|\u2192)\s*/gi;
+const RANGE_DATE_SEP_RE = /\s*(?:-+|[\u2010-\u2014]+|\bto\b|\buntil\b|\bthrough\b|\u2192)\s*/gi;
+const BULLET_PREFIX_RE = /^\s*[-\u2013\u2014*•·▪‣◦>]\s+/;
+// Render date ranges as "start - end" while still accepting messy pasted separators.
+function tidyDates(s) {
+  const raw = String(s || "").trim();
+  const sep = DATE_ONLY.test(raw) ? RANGE_DATE_SEP_RE : RANGE_WORD_SEP_RE;
+  return raw.replace(sep, " - ").replace(/\s{2,}/g, " ").trim();
+}
+const LINK_RE = /([A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})|((?:https?:\/\/|www\.)[^\s|<]+)|([A-Za-z0-9\-]+(?:\.[A-Za-z0-9\-]+)*\.(?:com|org|net|io|dev|me|co|edu|gov|app|ai|xyz|info)(?:\/[^\s|<]*)?)/g;
+function linkify(s) {
+  return esc(s).replace(LINK_RE, (m, email, url, bare) => {
+    if (email) return '<a href="mailto:' + email + '">' + email + '</a>';
+    const t = url || bare, href = /^https?:/.test(t) ? t : "https://" + t;
+    return '<a href="' + href + '" target="_blank" rel="noopener">' + t + '</a>';
+  });
+}
+function isBulletLine(l) { return BULLET_PREFIX_RE.test(l); }
+function stripBullet(t) { return t.replace(BULLET_PREFIX_RE, ""); }
+function isContact(line) {
+  return /@/.test(line) || /https?:\/\/|www\./i.test(line)
+    || /\b(linkedin|github|gitlab|behance|dribbble|medium|portfolio|orcid)\b/i.test(line)
+    || /(?:\+?\d[\s\-().]{0,2}){9,}/.test(line)   /* phone: 9+ digit groups, so year ranges like 2021-2024 don't count */
+    || /\b[A-Za-z0-9.\-]+\.(?:com|org|net|io|dev|me|co|edu)\b/i.test(line);
+}
+function isHeader(t) {
+  const s = t.replace(/[:\s]+$/, "").trim();
+  if (!s) return false;
+  const low = s.toLowerCase();
+  if (KNOWN.includes(low)) return true;
+  if (s.split(/\s+/).length <= 4) { for (const k of KW) if (low === k || low.startsWith(k + " ") || low.endsWith(" " + k)) return true; }
+  const letters = s.replace(/[^A-Za-z]/g, "");
+  if (letters.length >= 2 && s === s.toUpperCase() && /[A-Z]/.test(s) && s.length <= 40 && s.split(/\s+/).length <= 5) return true;
+  if (/:$/.test(t.trim()) && s.length <= 28 && s.split(/\s+/).length <= 4 && /^[A-Za-z][A-Za-z &/]*$/.test(s)) return true;
+  return false;
+}
+function entryLike(title) {
+  if (!title) return false;
+  return /experience|employ|work|project|leadership|volunteer|activit|research|extracurric|education|involvement|position|internship/i.test(title);
+}
+function attachLooseLines(title) {
+  return /project|experience|employ|work|leadership|volunteer|activit|research|extracurric|involvement|position|internship/i.test(title || "");
+}
+function isDegree(t) { return /^(?:b\.?\s?s|b\.?\s?a|m\.?\s?s|m\.?\s?a|ph\.?\s?d|b\.?eng|b\.?tech|m\.?eng|mba|bachelor|master|associate|doctor|diploma|certificate)\b/i.test(t.trim()); }
+// does a line plausibly read as a person's name (so we don't mistake a pasted entry for one)?
+function nameLike(s) { return /[A-Za-z]/.test(s) && !/[@\d]/.test(s) && s.split(/\s+/).length <= 5; }
+function cleanHeader(t) { return t.replace(/[:\s]+$/, "").trim(); }
+
+function metaLike(s) {
+  if (!s) return false;
+  return DATE_ONLY.test(s)
+    || /^[A-Z][A-Za-z.\-]+(?:[ ][A-Z][A-Za-z.\-]+)*,\s*[A-Z]{2}$/.test(s)
+    || /^(?:Remote|Hybrid|On-?site|Onsite)$/i.test(s);
+}
+const SOFT_SEPS = [[" \u2013 ", 3], [" \u2014 ", 3], [" -- ", 4], [" · ", 3], [" • ", 3]];
+function extractMeta(t, auto) {
+  // Hard separators show explicit intent; earliest wins.
+  let cut = -1, len = 0;
+  const tabI = t.indexOf("\t"); if (tabI >= 0) { cut = tabI; len = 1; }
+  const barI = t.indexOf(" | "); if (barI >= 0 && (cut < 0 || barI < cut)) { cut = barI; len = 3; }
+  if (cut >= 0) return [t.slice(0, cut).trim(), t.slice(cut + len).trim()];
+  // Soft separators split only when the right side is clearly metadata.
+  let best = -1, bestLen = 0;
+  for (const [s, l] of SOFT_SEPS) {
+    let from = 0, i;
+    while ((i = t.indexOf(s, from)) >= 0) {
+      if (i > 0 && metaLike(t.slice(i + l).trim())) { if (best < 0 || i < best) { best = i; bestLen = l; } break; }
+      from = i + l;
+    }
+  }
+  if (best >= 0) return [t.slice(0, best).trim(), t.slice(best + bestLen).trim()];
+  // With no separator, detect a trailing date or location.
+  if (auto) {
+    let m = t.match(DATE_TAIL);
+    if (m && m.index > 0) return [t.slice(0, m.index).replace(/[\s,\-\u2013\u2014|]+$/, "").trim(), t.slice(m.index).trim()];
+    m = t.match(LOC_TAIL);
+    if (m && m.index > 0) return [t.slice(0, m.index).replace(/[\s,\-\u2013\u2014|]+$/, "").trim(), t.slice(m.index).trim()];
+  }
+  return [t, ""];
+}
+// Is the whole line just metadata (dates and/or a location)? Returns {date, loc} or null.
+function metaParse(t) {
+  if (DATE_ONLY.test(t)) return { date: t, loc: "" };
+  if (LOC_ONLY.test(t)) return { date: "", loc: t };
+  const parts = t.split(/\s+[\u2013\u2014·|]\s+/).map(s => s.trim()).filter(Boolean);
+  if (parts.length === 2) {
+    const [a, b] = parts;
+    if (DATE_ONLY.test(a) && LOC_ONLY.test(b)) return { date: a, loc: b };
+    if (LOC_ONLY.test(a) && DATE_ONLY.test(b)) return { date: b, loc: a };
+  }
+  return null;
+}
+// does a fragment read like a job title?
+const ROLE_RE = /\b(?:engineer|developer|programmer|manager|designer|analyst|intern(?:ship)?|lead|director|scientist|consultant|specialist|architect|coordinator|associate|officer|president|founder|owner|teacher|professor|instructor|lecturer|nurse|accountant|recruiter|administrator|technician|strategist|marketer|writer|editor|researcher|advisor|representative|assistant|fellow|ambassador|volunteer|head|chief|apprentice|trainee|clerk|agent|planner|operator|supervisor|partner|principal|vp|ceo|cto|cfo|coo)\b/i;
+function isRole(s) { return ROLE_RE.test(s); }
+// Pull a title / company / location out of one dense entry line.
+function decompose(s) {
+  let loc = "";
+  let m = s.match(/\b(?:Remote|Hybrid|On-?site|Onsite)\b/i);
+  if (!m) m = s.match(/[A-Z][A-Za-z.\-]+(?:[ ][A-Z][A-Za-z.\-]+)*,\s*[A-Z]{2}\b/);
+  if (m) { loc = m[0].trim(); s = s.slice(0, m.index) + "  " + s.slice(m.index + m[0].length); }
+  const hasColumns = /\S\s{2,}\S/.test(s);   // fields separated by 2+ spaces (column layout)
+  const fields = s.split(/\s{2,}|\s*,\s*|\s+[\u2013\u2014·]\s+|\s+--\s+|\s+(?:at|@)\s+/i).map(x => x.trim()).filter(Boolean);
+  let title = s, company = "";
+  if (fields.length >= 2) {
+    const ti = fields.findIndex(isRole);
+    if (ti >= 0) { title = fields[ti]; company = fields.filter((_, k) => k !== ti).join(", "); }      // the role is the title, the rest is the company
+    else if (hasColumns) { title = fields[0]; company = fields.slice(1).join(", "); }                  // columns with no role: first field is the title
+    else { title = s; }                                                                                // comma-only with no role (e.g. a school name) stays whole
+  } else if (fields.length === 1) { title = fields[0]; }
+  const clean = x => (x || "").replace(/^[\s,;:\u2013\u2014-]+|[\s,;:\u2013\u2014-]+$/g, "").replace(/\s{2,}/g, " ").trim();
+  return { title: clean(title) || clean(s), subtitle: clean(company), submeta: loc };
+}
+
+/* ============================ parse: raw text -> structure ============================ */
+function parse(raw) {
+  const lines = raw.split(/\r?\n/);
+  let i = 0;
+  while (i < lines.length && !lines[i].trim()) i++;
+  // skip a leading "Resume" / "CV" title line some people put at the very top
+  if (i < lines.length && /^(resume|cv|curriculum vitae|r[ée]sum[ée])$/i.test(lines[i].trim())) {
+    i++; while (i < lines.length && !lines[i].trim()) i++;
+  }
+  const contactParts = [];
+  let headline = "", headlineLine = 0, contactLine = 0;
+  let name = (lines[i] || "").trim();
+  let nameLine = i + 1;
+  if (name.includes(" | ")) {
+    const idx = name.indexOf(" | "), head = name.slice(0, idx).trim(), tail = name.slice(idx + 3).trim();
+    if (isContact(tail)) { name = head; contactParts.push(tail); contactLine = nameLine; }
+  }
+  if (name && !isHeader(name) && nameLike(name)) i++; else { name = ""; nameLine = 0; }   // First line is not a name, so keep it for the body.
+  // scan the lines just under the name: collect contact lines, and (once) a short
+  // professional title as a headline, so "Name / Senior Engineer / email..." works.
+  let scanned = 0;
+  while (i < lines.length && scanned < 4) {
+    if (!lines[i].trim()) { i++; continue; }
+    const t = lines[i].trim();
+    if (isHeader(t)) break;
+    if (isContact(t)) { contactParts.push(t); if (!contactLine) contactLine = i + 1; i++; scanned++; continue; }
+    if (!headline && t.length <= 64 && !/[.]$/.test(t) && t.split(/\s+/).length <= 9) { headline = t; headlineLine = i + 1; i++; scanned++; continue; }
+    break;
+  }
+  const contact = contactParts.join(" | ");
+  const restStart = i;
+  const rest = lines.slice(i);
+
+  const sections = [];
+  let cur = { title: null, line: 0, blocks: [] };
+  sections.push(cur);
+  let openBullets = false;            // are we currently inside a run of bullet lines?
+  const addBullet = (text, line) => {
+    const last = cur.blocks[cur.blocks.length - 1];
+    const bullet = { text, line };
+    if (last && (last.type === "entry" || last.type === "list")) last.bullets.push(bullet);
+    else cur.blocks.push({ type: "list", line, bullets: [bullet] });
+    openBullets = true;
+  };
+  const addPara = (text, line) => { cur.blocks.push({ type: "para", text, line }); openBullets = false; };
+  const nextIdx = from => { for (let j = from; j < rest.length; j++) if (rest[j].trim()) return j; return -1; };
+  const nextIsBullet = from => { const j = nextIdx(from); return j >= 0 && isBulletLine(rest[j]); };
+  const nextBulletSoon = from => {
+    let j = nextIdx(from);
+    for (let seen = 0; j >= 0 && seen < 2; seen++, j = nextIdx(j + 1)) {
+      if (isBulletLine(rest[j])) return true;
+      if (isHeader(rest[j].trim())) return false;
+    }
+    return false;
+  };
+
+  for (let k = 0; k < rest.length; k++) {
+    const line = rest[k], t = line.trim();
+    const sourceLine = restStart + k + 1;
+    if (!t) { openBullets = false; continue; }   // a blank line ends a bullet run
+    if (isHeader(t)) { cur = { title: cleanHeader(t), line: sourceLine, blocks: [] }; sections.push(cur); openBullets = false; continue; }
+    if (isBulletLine(line)) { addBullet(stripBullet(t), sourceLine); continue; }
+
+    // A line that is ONLY metadata (dates and/or a location) attaches to the open entry.
+    const md = metaParse(t);
+    if (md) {
+      const lastB = cur.blocks[cur.blocks.length - 1];
+      if (lastB && lastB.type === "entry") {
+        if (md.date) { if (!lastB.meta) lastB.meta = md.date; else if (!lastB.submeta) lastB.submeta = md.date; }
+        if (md.loc) { if (!lastB.submeta) lastB.submeta = md.loc; else if (!lastB.meta) lastB.meta = md.loc; }
+      } else { addPara(t, sourceLine); }
+      continue;
+    }
+
+    // A degree line just under a school becomes that entry's subtitle.
+    if (isDegree(t)) {
+      const lb = cur.blocks[cur.blocks.length - 1];
+      if (lb && lb.type === "entry" && !lb.subtitle && lb.bullets.length === 0) {
+        const dm = extractMeta(t, true);
+        lb.subtitle = dm[0]; lb.subLine = sourceLine; if (dm[1] && !lb.submeta) lb.submeta = dm[1];
+        openBullets = false; continue;
+      }
+    }
+
+    const hasExplicit = / \| |\t/.test(t);
+    const el = entryLike(cur.title) || cur.title === null;   // Treat the header-less preamble as entry-like too.
+    if (!hasExplicit && /^[^:|\t]{1,24}:\s+\S/.test(t)) { addPara(t, sourceLine); continue; }
+    const [left, right] = extractMeta(t, el);
+    const lastBlk = cur.blocks[cur.blocks.length - 1];
+    const inEntry = lastBlk && lastBlk.type === "entry";
+
+    // unmarked accomplishment lines: long sentences, or any prose line while a bullet run is open
+    if ((el || inEntry) && right === "" && !hasExplicit && /\s/.test(t) && (t.length >= 46 || openBullets)) { addBullet(t, sourceLine); continue; }
+    if (inEntry && attachLooseLines(cur.title) && right === "" && !hasExplicit && /\s/.test(t)
+      && (lastBlk.bullets.length > 0 || nextBulletSoon(k + 1) || /[,/]/.test(t))) {
+      addBullet(t, sourceLine);
+      continue;
+    }
+
+    const isEntry = right !== "" || nextIsBullet(k + 1) || (el && t.length <= 70 && !/[.]$/.test(t));
+    if (isEntry) {
+      const d = decompose(left);
+      const entry = { type: "entry", title: d.title, meta: right, subtitle: d.subtitle, submeta: d.submeta, line: sourceLine, subLine: 0, bullets: [] };
+      cur.blocks.push(entry);
+      openBullets = false;
+      if (!entry.subtitle) {           // No company found inline, so look for it on the next line.
+        const ni = nextIdx(k + 1);
+        if (ni >= 0 && !isHeader(rest[ni].trim()) && !isBulletLine(rest[ni])) {
+          const nt = rest[ni].trim(), [sl, sr] = extractMeta(nt, el);
+          if (sr !== "" || nextIsBullet(ni + 1) || isDegree(nt)) { entry.subtitle = sl; entry.submeta = entry.submeta || sr; entry.subLine = restStart + ni + 1; k = ni; }
+        }
+      }
+      continue;
+    }
+    addPara(t, sourceLine);
+  }
+  return { name, nameLine, contact, contactLine, headline, headlineLine, sections };
+}
+
+/* ============================ render: structure -> html ============================ */
+function labeled(t) {
+  const m = t.match(/^([^:]{1,24}):\s+(.+)$/);
+  if (m && !/[.,]/.test(m[1])) return '<span class="r-label">' + esc(m[1]) + ':</span> ' + linkify(m[2]);
+  const loose = t.match(/^(languages|frontend|backend|infra|infrastructure|frameworks|tools|data(?: and infrastructure)?|practices|coursework)\s+(.+)$/i);
+  if (loose) return '<span class="r-label">' + esc(loose[1]) + ':</span> ' + linkify(loose[2]);
+  return linkify(t);
+}
+function srcAttr(line) {
+  return line ? ' data-src-line="' + line + '" title="Jump to source line ' + line + '"' : "";
+}
+function srcWrap(line, html) {
+  return line ? '<span' + srcAttr(line) + '>' + html + '</span>' : html;
+}
+function bulletText(b) { return typeof b === "object" ? b.text : b; }
+function bulletLine(b, fallback) { return typeof b === "object" ? b.line : fallback; }
+function renderHTML(a) {
+  let h = '<h1 class="r-name">' + srcWrap(a.nameLine, esc(a.name) || "Your Name") + '</h1>';
+  if (a.headline) h += '<div class="r-headline">' + srcWrap(a.headlineLine, linkify(a.headline)) + '</div>';
+  if (a.contact) h += '<div class="r-contact">' + srcWrap(a.contactLine, linkify(a.contact.replace(/\s{2,}/g, "  ·  "))) + '</div>';
+  for (const sec of a.sections) {
+    if (sec.title) h += '<h2 class="r-sec">' + srcWrap(sec.line, esc(sec.title)) + '</h2>';
+    for (const b of sec.blocks) {
+      if (b.type === "entry") {
+        h += '<div class="r-entry"><div class="r-row"><span class="r-title">' + srcWrap(b.line, linkify(b.title)) + '</span>' +
+          (b.meta ? '<span class="r-meta">' + srcWrap(b.line, linkify(tidyDates(b.meta))) + '</span>' : '') + '</div>';
+        if (b.subtitle || b.submeta) h += '<div class="r-row"><span class="r-sub">' + srcWrap(b.subLine || b.line, linkify(b.subtitle)) + '</span>' +
+          (b.submeta ? '<span class="r-meta">' + srcWrap(b.subLine || b.line, linkify(tidyDates(b.submeta))) + '</span>' : '') + '</div>';
+        if (b.bullets.length) h += '<ul>' + b.bullets.map(x => '<li>' + srcWrap(bulletLine(x, b.line), linkify(bulletText(x))) + '</li>').join("") + '</ul>';
+        h += '</div>';
+      } else if (b.type === "list") {
+        h += '<ul>' + b.bullets.map(x => '<li>' + srcWrap(bulletLine(x, b.line), linkify(bulletText(x))) + '</li>').join("") + '</ul>';
+      } else {
+        h += '<p class="r-para">' + srcWrap(b.line, labeled(b.text)) + '</p>';
+      }
+    }
+  }
+  return h;
+}
+/* ============================ app wiring ============================ */
+const FONTS = [
+  ['Georgia, "Times New Roman", serif', "Georgia", "serif"],
+  ['"Times New Roman", Times, serif', "Times New Roman", "serif"],
+  ['Garamond, "EB Garamond", "Apple Garamond", Georgia, serif', "Garamond", "serif"],
+  ['"Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif', "Palatino", "serif"],
+  ['"Latin Modern Roman", "CMU Serif", Georgia, serif', "Computer Modern", "serif"],
+  ['Cambria, "Hoefler Text", Georgia, serif', "Cambria", "serif"],
+  ['-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif', "System Sans", "sans"],
+  ['Helvetica, Arial, sans-serif', "Helvetica", "sans"],
+  ['Calibri, Carlito, "Segoe UI", sans-serif', "Calibri", "sans"],
+  ['Verdana, Geneva, sans-serif', "Verdana", "sans"],
+  ['"Trebuchet MS", "Segoe UI", sans-serif', "Trebuchet", "sans"],
+];
+
+const src = document.getElementById("src");
+const highlights = document.getElementById("highlights");
+const paper = document.getElementById("paper");
+const paperWrap = document.getElementById("paperWrap");
+const paperStage = document.getElementById("paperStage");
+const preview = document.getElementById("preview");
+const mainEl = document.getElementById("main");
+const splitter = document.getElementById("splitter");
+const tplSel = document.getElementById("tpl");
+const fontSel = document.getElementById("font");
+const countEl = document.getElementById("count");
+const cursorHint = document.getElementById("cursorHint");
+const pageCountEl = document.getElementById("pageCount");
+const zoomLabel = document.getElementById("zoomLabel");
+let curTpl = "modern", curAccent = ACCENTS[0], curFont = "";
+let resumeZoom = 1, editorFontSize = 15, layoutFrame = 0, draggingSplit = false;
+let lastCursorLine = 0;
+const PAGE_GAP = 28;
+const TOUR_STEPS = [
+  {
+    target: "#src",
+    title: "Paste anything resume-shaped",
+    body: "Drop in a finished resume, rough notes, or a messy LinkedIn-style paste. Onepage reads names, links, sections, dates, bullets, and short project notes."
+  },
+  {
+    target: "#sample",
+    title: "Try a sample",
+    body: "Use Load sample to see a polished example or a messy paste. It is a quick way to learn what the parser understands."
+  },
+  {
+    target: "#preview",
+    title: "Preview updates live",
+    body: "The right side is the formatted resume. Move your cursor on the left to center and flash the matching resume text; click resume text to jump back to its source line."
+  },
+  {
+    target: "#tpl",
+    title: "Pick the look",
+    body: "Switch templates, fonts, and accent colors from the top bar. The resume keeps the same content while the presentation changes."
+  },
+  {
+    target: "#share",
+    title: "Bookmark your version",
+    body: "Copy link puts the whole resume in the URL. Bookmark that copied link to keep this version saved."
+  },
+  {
+    target: "#export",
+    title: "Export when ready",
+    body: "Use Export PDF for a print-ready resume. The preview handles page spacing and zoom before you export."
+  }
+];
+
+function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+function highlightLine(line) {
+  const t = line.trim();
+  if (!t) return esc(line || " ");
+  let cls = "tok-text";
+  if (isHeader(t)) cls = "tok-section";
+  else if (isContact(t)) cls = "tok-contact";
+  else if (isBulletLine(line)) cls = "tok-bullet";
+  else if (DATE_ONLY.test(t) || LOC_ONLY.test(t)) cls = "tok-date";
+  else if (isDegree(t)) cls = "tok-degree";
+  else if (/^[^:|\t]{1,24}:\s+\S/.test(t)) cls = "tok-label";
+  else if (extractMeta(t, true)[1] || t.length <= 70) cls = "tok-entry";
+  return '<span class="' + cls + '">' + esc(line || " ") + '</span>';
+}
+function updateHighlights() {
+  if (!highlights) return;
+  highlights.innerHTML = src.value.split(/\r?\n/).map(highlightLine).join("\n") + (src.value.endsWith("\n") ? "\n" : "");
+  syncHighlightScroll();
+}
+function syncHighlightScroll() {
+  if (!highlights) return;
+  highlights.scrollTop = src.scrollTop;
+  highlights.scrollLeft = src.scrollLeft;
+}
+function describeLine(line) {
+  const t = line.trim();
+  if (!t) return "blank line";
+  if (isHeader(t)) return "section header";
+  if (isContact(t)) return "contact line";
+  if (isBulletLine(line)) return "bullet";
+  if (DATE_ONLY.test(t)) return "date";
+  if (LOC_ONLY.test(t)) return "location";
+  if (isDegree(t)) return "degree";
+  if (/^[^:|\t]{1,24}:\s+\S/.test(t)) return "labeled detail";
+  if (extractMeta(t, true)[1]) return "entry with right-side detail";
+  return "resume text";
+}
+function updateCursorHint() {
+  if (!cursorHint) return;
+  const pos = src.selectionStart || 0;
+  const before = src.value.slice(0, pos);
+  const lineNo = before.split(/\r?\n/).length;
+  const lines = src.value.split(/\r?\n/);
+  const line = lines[lineNo - 1] || "";
+  cursorHint.textContent = "Line " + lineNo + ": " + describeLine(line);
+}
+function handleCursorLocation(flash) {
+  updateCursorHint();
+  const line = currentSourceLine();
+  if (flash && line !== lastCursorLine) flashPreviewLine(line, "center");
+  lastCursorLine = line;
+}
+function isCursorMoveKey(e) {
+  return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Home", "End", "PageUp", "PageDown"].includes(e.key);
+}
+function currentSourceLine() {
+  return src.value.slice(0, src.selectionStart || 0).split(/\r?\n/).length;
+}
+function lineStartOffset(lineNo) {
+  const lines = src.value.split(/\r?\n/);
+  let offset = 0;
+  for (let i = 0; i < Math.max(0, lineNo - 1) && i < lines.length; i++) offset += lines[i].length + 1;
+  return offset;
+}
+function previewTargetForLine(lineNo) {
+  let exact = paper.querySelector('[data-src-line="' + lineNo + '"]');
+  if (exact) return exact;
+  let best = null, bestLine = -1;
+  paper.querySelectorAll("[data-src-line]").forEach(el => {
+    const line = Number(el.dataset.srcLine) || 0;
+    if (line <= lineNo && line > bestLine) { best = el; bestLine = line; }
+  });
+  return best;
+}
+let sourceFlashT = 0;
+function flashPreviewLine(lineNo, scrollMode) {
+  const target = previewTargetForLine(lineNo);
+  paper.querySelectorAll(".source-flash").forEach(el => el.classList.remove("source-flash"));
+  if (!target) return;
+  target.classList.add("source-flash");
+  if (scrollMode === "center") {
+    const targetRect = target.getBoundingClientRect();
+    const previewRect = preview.getBoundingClientRect();
+    const delta = (targetRect.top + targetRect.height / 2) - (previewRect.top + previewRect.height / 2);
+    preview.scrollTo({ top: preview.scrollTop + delta, behavior: "smooth" });
+  } else if (scrollMode) {
+    target.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+  }
+  clearTimeout(sourceFlashT);
+  sourceFlashT = setTimeout(() => target.classList.remove("source-flash"), 620);
+}
+function jumpEditorToLine(lineNo) {
+  const lines = src.value.split(/\r?\n/);
+  const line = clamp(Math.round(Number(lineNo) || 1), 1, Math.max(1, lines.length));
+  const offset = lineStartOffset(line);
+  src.focus({ preventScroll: true });
+  src.setSelectionRange(offset, offset);
+  const lh = parseFloat(getComputedStyle(src).lineHeight) || editorFontSize * 1.72;
+  src.scrollTop = Math.max(0, (line - 1) * lh - src.clientHeight * 0.35);
+  syncHighlightScroll();
+  updateCursorHint();
+}
+function schedulePaperLayout() {
+  cancelAnimationFrame(layoutFrame);
+  layoutFrame = requestAnimationFrame(updatePaperLayout);
+}
+function clearPageLayout() {
+  paper.querySelectorAll(".page-spacer").forEach(el => el.remove());
+  const backgrounds = paper.querySelector(".page-backgrounds");
+  if (backgrounds) backgrounds.remove();
+  paper.style.minHeight = "";
+}
+function topInPaper(el) {
+  let top = 0, node = el;
+  while (node && node !== paper) {
+    top += node.offsetTop || 0;
+    node = node.offsetParent;
+  }
+  return top;
+}
+function insertPageSpacer(before, height) {
+  const spacer = document.createElement(before.tagName === "LI" ? "li" : "div");
+  spacer.className = "page-spacer";
+  spacer.style.height = Math.ceil(height) + "px";
+  before.before(spacer);
+}
+function breakInfo(el, pageH, pageStride, bottomPad) {
+  const top = topInPaper(el);
+  const height = el.offsetHeight || 0;
+  if (!height) return null;
+  const page = Math.floor(top / pageStride);
+  const pageStart = page * pageStride;
+  const pageBottom = pageStart + pageH - bottomPad;
+  if (top >= pageBottom || top + height > pageBottom) {
+    return { top, height, pageStart, nextTop: pageStart + pageStride };
+  }
+  return null;
+}
+function tryBreakBefore(el, pageH, pageStride, bottomPad, topPad) {
+  if (!el || el.classList.contains("page-spacer") || el.classList.contains("page-backgrounds")) return false;
+  const info = breakInfo(el, pageH, pageStride, bottomPad);
+  if (!info) return false;
+  insertPageSpacer(el, info.nextTop + topPad - info.top);
+  return true;
+}
+function entryHeaderChildren(entry) {
+  return Array.from(entry.children).filter(el => el.classList.contains("r-row"));
+}
+function entryBulletChildren(entry) {
+  return Array.from(entry.querySelectorAll(":scope > ul > li")).filter(el => !el.classList.contains("page-spacer"));
+}
+function paginatePaper(pageH) {
+  const styles = getComputedStyle(paper);
+  const topPad = parseFloat(styles.paddingTop) || 56;
+  const bottomPad = parseFloat(styles.paddingBottom) || topPad;
+  const pageBody = Math.max(1, pageH - topPad - bottomPad);
+  const pageStride = pageH + PAGE_GAP;
+
+  for (const child of Array.from(paper.children)) {
+    if (child.classList.contains("page-backgrounds") || child.classList.contains("page-spacer")) continue;
+    const height = child.offsetHeight || 0;
+    if (!height || height >= pageBody) continue;
+
+    if (child.classList.contains("r-entry")) {
+      const header = entryHeaderChildren(child);
+      const headerBottom = header.reduce((max, el) => Math.max(max, topInPaper(el) + (el.offsetHeight || 0)), topInPaper(child));
+      const probe = header[0] || child;
+      const info = breakInfo(probe, pageH, pageStride, bottomPad);
+      if (info && headerBottom > info.pageStart + pageH - bottomPad) {
+        insertPageSpacer(child, info.nextTop + topPad - topInPaper(child));
+        return true;
+      }
+      for (const li of entryBulletChildren(child)) {
+        if (tryBreakBefore(li, pageH, pageStride, bottomPad, topPad)) return true;
+      }
+      continue;
+    }
+
+    if (child.tagName === "UL") {
+      for (const li of Array.from(child.children).filter(el => !el.classList.contains("page-spacer"))) {
+        if (tryBreakBefore(li, pageH, pageStride, bottomPad, topPad)) return true;
+      }
+      continue;
+    }
+
+    if (child.classList.contains("r-sec")) {
+      const next = child.nextElementSibling;
+      const info = breakInfo(child, pageH, pageStride, bottomPad);
+      if (info || (next && topInPaper(next) < topInPaper(child) + child.offsetHeight + 42)) {
+        if (tryBreakBefore(child, pageH, pageStride, bottomPad, topPad)) return true;
+      }
+      continue;
+    }
+
+    if (tryBreakBefore(child, pageH, pageStride, bottomPad, topPad)) return true;
+  }
+  return false;
+}
+function drawPageSheets(pageH, pages) {
+  const backgrounds = document.createElement("div");
+  backgrounds.className = "page-backgrounds";
+  for (let i = 0; i < pages; i++) {
+    const sheet = document.createElement("div");
+    sheet.className = "page-sheet";
+    sheet.style.top = (i * (pageH + PAGE_GAP)) + "px";
+    sheet.style.height = pageH + "px";
+    backgrounds.appendChild(sheet);
+  }
+  paper.prepend(backgrounds);
+}
+function updatePaperLayout() {
+  clearPageLayout();
+
+  const pageH = Math.max(1, Math.round((paper.offsetWidth || 816) * 11 / 8.5));
+  for (let pass = 0; pass < 8; pass++) {
+    if (!paginatePaper(pageH)) break;
+  }
+  const contentH = Math.max(paper.scrollHeight, paper.offsetHeight, pageH);
+  const pages = Math.max(1, Math.ceil((contentH + PAGE_GAP) / (pageH + PAGE_GAP)));
+  const totalH = pages * pageH + (pages - 1) * PAGE_GAP;
+  paper.style.minHeight = totalH + "px";
+  if (pageCountEl) pageCountEl.textContent = pages + " " + (pages === 1 ? "page" : "pages");
+  drawPageSheets(pageH, pages);
+
+  const baseW = paperWrap ? paperWrap.offsetWidth : paper.offsetWidth;
+  const baseH = Math.max(totalH, paperWrap ? paperWrap.offsetHeight : paper.offsetHeight);
+  if (paperStage) {
+    paperStage.style.width = Math.ceil(baseW * resumeZoom) + "px";
+    paperStage.style.height = Math.ceil(baseH * resumeZoom) + "px";
+  }
+}
+function setResumeZoom(v, persist = true) {
+  resumeZoom = clamp(Number(v) || 1, .45, 1.7);
+  document.documentElement.style.setProperty("--resume-zoom", resumeZoom);
+  if (zoomLabel) zoomLabel.textContent = Math.round(resumeZoom * 100) + "%";
+  if (persist) { try { localStorage.setItem("onepage_zoom", String(resumeZoom)); } catch (e) {} }
+  schedulePaperLayout();
+}
+function setResumeZoomAt(v, clientX, clientY) {
+  const before = resumeZoom;
+  const rect = preview.getBoundingClientRect();
+  const localX = clientX - rect.left;
+  const localY = clientY - rect.top;
+  const anchorX = (preview.scrollLeft + localX) / before;
+  const anchorY = (preview.scrollTop + localY) / before;
+  setResumeZoom(v);
+  requestAnimationFrame(() => {
+    preview.scrollLeft = anchorX * resumeZoom - localX;
+    preview.scrollTop = anchorY * resumeZoom - localY;
+  });
+}
+function fitResume() {
+  const available = Math.max(260, preview.clientWidth - 48);
+  const base = paper.offsetWidth || 816;
+  setResumeZoom(clamp(available / base, .45, 1.25));
+}
+function setEditorFontSize(v, persist = true) {
+  editorFontSize = clamp(Number(v) || 15, 12, 22);
+  document.documentElement.style.setProperty("--editor-font", editorFontSize + "px");
+  if (persist) { try { localStorage.setItem("onepage_editor_font", String(editorFontSize)); } catch (e) {} }
+  updateHighlights();
+}
+function setEditorWidthPercent(pct, persist = true) {
+  const v = clamp(Number(pct) || 44, 30, 68);
+  document.documentElement.style.setProperty("--editor-w", v + "%");
+  if (persist) { try { localStorage.setItem("onepage_editor_w", String(v)); } catch (e) {} }
+  schedulePaperLayout();
+}
+
+const tour = document.getElementById("tour");
+const tourSpot = document.getElementById("tourSpot");
+const tourCard = document.getElementById("tourCard");
+const tourTitle = document.getElementById("tourTitle");
+const tourBody = document.getElementById("tourBody");
+const tourProgress = document.getElementById("tourProgress");
+const tourBack = document.getElementById("tourBack");
+const tourNext = document.getElementById("tourNext");
+const tourSkip = document.getElementById("tourSkip");
+let tourIndex = 0, tourOpen = false;
+function visibleTarget(selector) {
+  const direct = document.querySelector(selector);
+  if (!direct) return null;
+  if (selector === "#sample") return customSelects.get(direct)?.wrap || direct;
+  if (selector === "#tpl") return customSelects.get(direct)?.wrap || direct;
+  return direct;
+}
+function placeTourCard(rect) {
+  const pad = 14;
+  const cardW = Math.min(340, window.innerWidth - pad * 2);
+  const cardH = Math.min(240, Math.max(156, tourCard.offsetHeight || 172));
+  const gap = 16;
+  const spaces = {
+    bottom: window.innerHeight - rect.bottom,
+    top: rect.top,
+    right: window.innerWidth - rect.right,
+    left: rect.left
+  };
+  let side = "bottom";
+  if (spaces.bottom < cardH + gap && spaces.top > spaces.bottom) side = "top";
+  if (Math.max(spaces.left, spaces.right) > Math.max(spaces.top, spaces.bottom) && Math.max(spaces.left, spaces.right) > cardW + gap) {
+    side = spaces.right > spaces.left ? "right" : "left";
+  }
+  let left = rect.left + rect.width / 2 - cardW / 2;
+  let top = rect.bottom + gap;
+  if (side === "top") top = rect.top - cardH - gap;
+  if (side === "right") { left = rect.right + gap; top = rect.top + rect.height / 2 - cardH / 2; }
+  if (side === "left") { left = rect.left - cardW - gap; top = rect.top + rect.height / 2 - cardH / 2; }
+  left = clamp(left, pad, window.innerWidth - cardW - pad);
+  top = clamp(top, pad, window.innerHeight - cardH - pad);
+  tourCard.style.width = cardW + "px";
+  tourCard.style.left = left + "px";
+  tourCard.style.top = top + "px";
+}
+function showTourStep() {
+  const step = TOUR_STEPS[tourIndex];
+  const target = visibleTarget(step.target);
+  if (!target) return endTour(true);
+  target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
+  requestAnimationFrame(() => {
+    const rect = target.getBoundingClientRect();
+    const pad = 10;
+    tourSpot.style.left = Math.max(8, rect.left - pad) + "px";
+    tourSpot.style.top = Math.max(8, rect.top - pad) + "px";
+    tourSpot.style.width = Math.min(window.innerWidth - 16, rect.width + pad * 2) + "px";
+    tourSpot.style.height = Math.min(window.innerHeight - 16, rect.height + pad * 2) + "px";
+    placeTourCard(rect);
+    tourTitle.textContent = step.title;
+    tourBody.textContent = step.body;
+    tourProgress.textContent = (tourIndex + 1) + " of " + TOUR_STEPS.length;
+    tourBack.disabled = tourIndex === 0;
+    tourNext.textContent = tourIndex === TOUR_STEPS.length - 1 ? "Done" : "Next";
+  });
+}
+function startTour(force = false) {
+  if (!force) {
+    try { if (localStorage.getItem("onepage_onboarded") === "1") return; } catch (e) {}
+  }
+  tourOpen = true;
+  tourIndex = 0;
+  tour.classList.add("show");
+  tour.setAttribute("aria-hidden", "false");
+  showTourStep();
+}
+function endTour(markSeen = true) {
+  tourOpen = false;
+  tour.classList.remove("show");
+  tour.setAttribute("aria-hidden", "true");
+  if (markSeen) { try { localStorage.setItem("onepage_onboarded", "1"); } catch (e) {} }
+}
+
+const customSelects = new Map();
+function closeCustomSelects(except) {
+  customSelects.forEach(api => { if (api !== except) api.close(); });
+}
+function syncCustomSelect(select) {
+  const api = customSelects.get(select);
+  if (api) api.sync();
+}
+function enhanceSelect(select, opts = {}) {
+  if (!select || customSelects.has(select)) return;
+  const wrap = document.createElement("div");
+  wrap.className = "custom-select " + select.id;
+  select.classList.add("native-select");
+  select.parentNode.insertBefore(wrap, select);
+  wrap.appendChild(select);
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "select-button";
+  btn.setAttribute("aria-haspopup", "listbox");
+  btn.setAttribute("aria-expanded", "false");
+
+  const value = document.createElement("span");
+  value.className = "select-value";
+  const chev = document.createElement("span");
+  chev.className = "select-chev";
+  chev.setAttribute("aria-hidden", "true");
+  chev.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+  btn.append(value, chev);
+
+  const menu = document.createElement("div");
+  menu.className = "select-menu";
+  menu.id = select.id + "-menu";
+  menu.setAttribute("role", "listbox");
+  btn.setAttribute("aria-controls", menu.id);
+  wrap.append(btn, menu);
+
+  let nodes = [], active = -1;
+  const addOption = opt => {
+    if (opt.hidden) return;
+    const item = document.createElement("div");
+    item.className = "select-option";
+    item.id = select.id + "-opt-" + nodes.length;
+    item.dataset.value = opt.value;
+    item.textContent = opt.textContent;
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", opt.value === select.value ? "true" : "false");
+    if (opt.style.fontFamily) item.style.fontFamily = opt.style.fontFamily;
+    item.addEventListener("mousemove", () => setActive(nodes.indexOf(item)));
+    item.addEventListener("mousedown", e => e.preventDefault());
+    item.addEventListener("click", () => choose(opt.value));
+    nodes.push(item);
+    menu.appendChild(item);
+  };
+  const rebuild = () => {
+    menu.innerHTML = "";
+    nodes = [];
+    Array.from(select.children).forEach(child => {
+      if (child.tagName === "OPTGROUP") {
+        const label = document.createElement("div");
+        label.className = "select-group-label";
+        label.textContent = child.label;
+        menu.appendChild(label);
+        Array.from(child.children).forEach(addOption);
+      } else if (child.tagName === "OPTION") {
+        addOption(child);
+      }
+    });
+  };
+  function setActive(idx) {
+    if (!nodes.length) return;
+    active = Math.max(0, Math.min(nodes.length - 1, idx));
+    nodes.forEach((n, i) => n.classList.toggle("active", i === active));
+    btn.setAttribute("aria-activedescendant", nodes[active].id);
+    nodes[active].scrollIntoView({ block: "nearest" });
+  }
+  function sync() {
+    const selected = select.selectedOptions[0];
+    value.textContent = selected ? selected.textContent : (opts.placeholder || "Select");
+    if (opts.mirrorFont) {
+      btn.style.fontFamily = select.value || "";
+      value.style.fontFamily = select.value || "";
+    }
+    nodes.forEach(n => n.setAttribute("aria-selected", n.dataset.value === select.value ? "true" : "false"));
+  }
+  function open() {
+    closeCustomSelects(api);
+    rebuild();
+    sync();
+    menu.classList.remove("align-right");
+    wrap.classList.add("open");
+    btn.setAttribute("aria-expanded", "true");
+    if (menu.getBoundingClientRect().right > window.innerWidth - 8) menu.classList.add("align-right");
+    const selectedIndex = nodes.findIndex(n => n.dataset.value === select.value);
+    setActive(selectedIndex >= 0 ? selectedIndex : 0);
+  }
+  function close() {
+    wrap.classList.remove("open");
+    btn.setAttribute("aria-expanded", "false");
+    btn.removeAttribute("aria-activedescendant");
+    active = -1;
+  }
+  function choose(v) {
+    select.value = v;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    close();
+  }
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    wrap.classList.contains("open") ? close() : open();
+  });
+  btn.addEventListener("keydown", e => {
+    const isOpen = wrap.classList.contains("open");
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!isOpen) open();
+      else setActive(active + (e.key === "ArrowDown" ? 1 : -1));
+    } else if (e.key === "Home" || e.key === "End") {
+      e.preventDefault();
+      if (!isOpen) open();
+      setActive(e.key === "Home" ? 0 : nodes.length - 1);
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (!isOpen) open();
+      else if (nodes[active]) choose(nodes[active].dataset.value);
+    } else if (e.key === "Escape" && isOpen) {
+      e.preventDefault();
+      close();
+    }
+  });
+  const api = { wrap, close, sync };
+  customSelects.set(select, api);
+  rebuild();
+  sync();
+}
+document.addEventListener("click", e => {
+  customSelects.forEach(api => { if (!api.wrap.contains(e.target)) api.close(); });
+});
+window.addEventListener("resize", () => closeCustomSelects());
+window.addEventListener("resize", () => { if (tourOpen) showTourStep(); });
+document.getElementById("infoBtn").addEventListener("click", () => startTour(true));
+tourNext.addEventListener("click", () => {
+  if (tourIndex >= TOUR_STEPS.length - 1) endTour(true);
+  else { tourIndex++; showTourStep(); }
+});
+tourBack.addEventListener("click", () => {
+  if (tourIndex > 0) { tourIndex--; showTourStep(); }
+});
+tourSkip.addEventListener("click", () => endTour(true));
+document.addEventListener("keydown", e => {
+  if (!tourOpen) return;
+  if (e.key === "Escape") endTour(true);
+  if (e.key === "ArrowRight") tourNext.click();
+  if (e.key === "ArrowLeft" && tourIndex > 0) tourBack.click();
+});
+
+function rerender(opts = {}) {
+  const flashLine = opts.flash ? currentSourceLine() : 0;
+  paper.innerHTML = renderHTML(parse(src.value));
+  updateHighlights();
+  updateCursorHint();
+  schedulePaperLayout();
+  if (flashLine) {
+    lastCursorLine = flashLine;
+    requestAnimationFrame(() => flashPreviewLine(flashLine, "center"));
+  } else {
+    lastCursorLine = currentSourceLine();
+  }
+  if (countEl) { const w = (src.value.match(/\S+/g) || []).length; countEl.textContent = w + (w === 1 ? " word" : " words"); }
+  try { localStorage.setItem("onepage_text", src.value); } catch (e) {}
+}
+function setTemplate(tpl) {
+  if (!TEMPLATES.includes(tpl)) tpl = "modern";
+  curTpl = tpl;
+  paper.className = "paper " + tpl;
+  tplSel.value = tpl;
+  syncCustomSelect(tplSel);
+  schedulePaperLayout();
+  try { localStorage.setItem("onepage_tpl", tpl); } catch (e) {}
+}
+function setAccent(c) {
+  curAccent = c;
+  document.documentElement.style.setProperty("--pa", c);
+  document.querySelectorAll("#accents .dot").forEach(d => d.classList.toggle("on", d.dataset.c === c));
+  const ap = document.getElementById("accentPick");
+  if (ap && /^#[0-9a-f]{6}$/i.test(c)) ap.value = c;
+  try { localStorage.setItem("onepage_accent", c); } catch (e) {}
+}
+function setFont(stack) {
+  curFont = stack || "";
+  paper.style.fontFamily = curFont;  // "" reverts to the template's own font
+  fontSel.value = curFont;
+  fontSel.style.fontFamily = curFont; // preview the chosen face in the control itself
+  syncCustomSelect(fontSel);
+  schedulePaperLayout();
+  try { localStorage.setItem("onepage_font", curFont); } catch (e) {}
+}
+
+(function buildFontMenu() {
+  const def = document.createElement("option");
+  def.value = ""; def.textContent = "Default (template font)";
+  fontSel.appendChild(def);
+  [["serif", "Serif"], ["sans", "Sans-serif"]].forEach(([key, label]) => {
+    const og = document.createElement("optgroup"); og.label = label;
+    FONTS.filter(f => f[2] === key).forEach(([stack, name]) => {
+      const o = document.createElement("option");
+      o.value = stack; o.textContent = name;
+      o.style.fontFamily = stack; o.style.fontSize = "15px";   // render each option in its own typeface
+      og.appendChild(o);
+    });
+    fontSel.appendChild(og);
+  });
+})();
+fontSel.addEventListener("change", () => setFont(fontSel.value));
+
+const accentsEl = document.getElementById("accents");
+ACCENTS.forEach(c => {
+  const d = document.createElement("button");
+  d.className = "dot"; d.style.background = c; d.dataset.c = c; d.title = "Accent color";
+  d.addEventListener("click", () => setAccent(c));
+  accentsEl.appendChild(d);
+});
+document.getElementById("accentPick").addEventListener("input", e => setAccent(e.target.value));
+tplSel.addEventListener("change", () => setTemplate(tplSel.value));
+src.addEventListener("input", () => rerender());
+src.addEventListener("scroll", syncHighlightScroll);
+src.addEventListener("click", () => handleCursorLocation(true));
+src.addEventListener("keyup", e => { if (isCursorMoveKey(e)) handleCursorLocation(true); else handleCursorLocation(false); });
+src.addEventListener("select", () => handleCursorLocation(true));
+paper.addEventListener("click", e => {
+  const target = e.target.closest("[data-src-line]");
+  if (!target || !paper.contains(target)) return;
+  e.preventDefault();
+  e.stopPropagation();
+  jumpEditorToLine(target.dataset.srcLine);
+  flashPreviewLine(Number(target.dataset.srcLine), false);
+});
+const exportBtn = document.getElementById("export");
+function preparePrint() {
+  clearPageLayout();
+  paper.style.minHeight = "";
+  paperStage.style.width = "";
+  paperStage.style.height = "";
+}
+function restoreAfterPrint() {
+  schedulePaperLayout();
+}
+exportBtn.addEventListener("click", e => {
+  e.preventDefault();
+  preparePrint();
+  window.print();
+  setTimeout(restoreAfterPrint, 300);
+});
+document.getElementById("sample").addEventListener("change", e => {
+  const s = SAMPLES[e.target.value];
+  if (s) { src.value = s; rerender(); history.replaceState(null, "", location.pathname); toast("Sample loaded"); }
+  e.target.value = "";
+  syncCustomSelect(e.target);
+});
+
+enhanceSelect(tplSel);
+enhanceSelect(fontSel, { mirrorFont: true });
+enhanceSelect(document.getElementById("sample"));
+
+document.getElementById("textSmaller").addEventListener("click", () => setEditorFontSize(editorFontSize - 1));
+document.getElementById("textLarger").addEventListener("click", () => setEditorFontSize(editorFontSize + 1));
+document.getElementById("zoomOut").addEventListener("click", () => setResumeZoom(resumeZoom - .1));
+document.getElementById("zoomIn").addEventListener("click", () => setResumeZoom(resumeZoom + .1));
+document.getElementById("zoomFit").addEventListener("click", fitResume);
+preview.addEventListener("wheel", e => {
+  if (!e.ctrlKey && !e.metaKey) return;
+  e.preventDefault();
+  setResumeZoomAt(resumeZoom * Math.exp(-e.deltaY * 0.0015), e.clientX, e.clientY);
+}, { passive: false });
+let gestureStartZoom = 1;
+preview.addEventListener("gesturestart", e => {
+  e.preventDefault();
+  gestureStartZoom = resumeZoom;
+}, { passive: false });
+preview.addEventListener("gesturechange", e => {
+  e.preventDefault();
+  setResumeZoomAt(gestureStartZoom * e.scale, e.clientX, e.clientY);
+}, { passive: false });
+
+splitter.addEventListener("pointerdown", e => {
+  draggingSplit = true;
+  splitter.classList.add("dragging");
+  splitter.setPointerCapture(e.pointerId);
+  document.body.style.userSelect = "none";
+});
+splitter.addEventListener("pointermove", e => {
+  if (!draggingSplit) return;
+  const r = mainEl.getBoundingClientRect();
+  setEditorWidthPercent(((e.clientX - r.left) / r.width) * 100);
+});
+function endSplitDrag(e) {
+  if (!draggingSplit) return;
+  draggingSplit = false;
+  splitter.classList.remove("dragging");
+  document.body.style.userSelect = "";
+  if (e && splitter.hasPointerCapture(e.pointerId)) splitter.releasePointerCapture(e.pointerId);
+}
+splitter.addEventListener("pointerup", endSplitDrag);
+splitter.addEventListener("pointercancel", endSplitDrag);
+splitter.addEventListener("keydown", e => {
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  e.preventDefault();
+  const raw = getComputedStyle(document.documentElement).getPropertyValue("--editor-w");
+  const cur = parseFloat(raw) || 44;
+  setEditorWidthPercent(cur + (e.key === "ArrowRight" ? 2 : -2));
+});
+window.addEventListener("resize", schedulePaperLayout);
+window.addEventListener("beforeprint", preparePrint);
+window.addEventListener("afterprint", restoreAfterPrint);
+
+/* ---------- share via URL ---------- */
+function enc(o) { return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/=+$/, ""); }
+function dec(s) { try { return JSON.parse(decodeURIComponent(escape(atob(s)))); } catch (e) { return null; } }
+document.getElementById("share").addEventListener("click", () => {
+  const url = location.origin + location.pathname + "#" + enc({ t: src.value, tpl: curTpl, ac: curAccent, font: curFont });
+  history.replaceState(null, "", url);
+  const ok = () => toast("Link copied. The whole resume is in the URL");
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(ok, () => toast("Copied to the address bar"));
+  else toast("Copied to the address bar");
+});
+let toastT;
+function toast(m) { const e = document.getElementById("toast"); e.textContent = m; e.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove("show"), 2400); }
+
+/* ---------- samples ---------- */
+const SAMPLES = {
+  clean: `Mira Vale
+mira.vale@example.com | https://code.example/mira | (555) 010-2486 | Portland, OR
+Product engineer focused on thoughtful AI tools and fast web platforms
+
+EDUCATION
+Redwood Technical University
+Portland, OR
+B.S. in Computer Science
+Aug 2024 - May 2028
+- Coursework: Algorithms, Databases, Human-Computer Interaction, Distributed Systems
+
+EXPERIENCE
+Software Engineering Intern | May 2025 - Aug 2025
+Northwind Labs | Remote
+- Reduced dashboard load time 32% by cleaning up duplicate API calls and caching repeated requests
+- Built a React and FastAPI release view used by 45 teammates to track experiments, flags, and deploy notes
+
+Research Assistant | Jan 2025 - Present
+RTU Interface Lab | Portland, OR
+- Prototyped an LLM-assisted note review workflow with TypeScript, SQLite, embeddings, and side-by-side diffs
+- Ran usability sessions with 18 students and converted feedback into clearer keyboard states and empty screens
+
+PROJECTS
+Onepage Resume Builder | Jan 2026 - Present
+https://projects.example/onepage
+- Built a zero-backend parser in vanilla HTML, CSS, and JavaScript with live preview, print export, share links, and local autosave
+
+TECHNICAL SKILLS
+Languages: TypeScript, Python, Go, C, SQL, Bash
+Frameworks: React, Next.js, FastAPI, Node.js, Tailwind
+Data and tools: PostgreSQL, Redis, SQLite, Docker, GitHub Actions, Playwright, Figma`,
+
+  messy: `Rowan Pike
+rowan.pike@example.com     (555) 010-9134      Oakland CA       https://code.example/rowan      https://work.example/rowan
+software engineer / platform and product engineering
+
+summary
+Software engineer building web applications, data workflows, and internal platforms across TypeScript, Go, React, PostgreSQL, and CI pipelines.
+
+EXPERIENCE
+Acme Cloud, San Francisco, CA          Software Engineer             March 2022 - Present
+rebuilt billing event pipeline with PostgreSQL, Redis, Node, TypeScript, and AWS.
+reduced invoice mismatch rate from 3.8 percent to 0.9 percent with idempotency keys, replay tooling, and a dashboard.
+owned React admin console, audit logs, and service runbooks.
+
+Software Engineer        Bluebird Labs        Remote          Jun 2019 - Feb 2022
+shipped first mobile app using React Native, GraphQL, Apollo, and shared component libraries.
+reduced API latency 40% with Redis caching, PostgreSQL indexes, and request batching.
+created GitHub Actions pipelines, Docker images, preview environments, and release checklists.
+
+PROJECTS:
+release desk       https://projects.example/release-desk       2024
+React / Node / PostgreSQL / GitHub API
+- Combined pull requests, deploy status, incidents, and owner notes into one release view.
+- Reduced manual release coordination for a six-person engineering team.
+
+EDUCATION:
+Bay City University
+B.S. in Computer Science
+Oakland, CA
+Aug 2015 - May 2019
+
+SKILLS
+languages TypeScript, JavaScript, Go, Python, SQL, Bash
+frontend React, Next.js, React Native, GraphQL, Tailwind, accessibility
+backend Node, FastAPI, PostgreSQL, Redis, webhooks, authentication, billing
+infra AWS, Docker, GitHub Actions, Prometheus, Grafana, Sentry`,
+};
+const SAMPLE = SAMPLES.clean;
+
+/* ---------- boot ---------- */
+function init() {
+  const hash = location.hash.length > 1 ? dec(location.hash.slice(1)) : null;
+  let zoom = 1, editFont = 15, editWidth = 44;
+  try {
+    zoom = Number(localStorage.getItem("onepage_zoom")) || zoom;
+    editFont = Number(localStorage.getItem("onepage_editor_font")) || editFont;
+    editWidth = Number(localStorage.getItem("onepage_editor_w")) || editWidth;
+  } catch (e) {}
+  if (hash && typeof hash.t === "string") {
+    src.value = hash.t;
+    setTemplate(hash.tpl || "modern");
+    setAccent(hash.ac || ACCENTS[0]);
+    setFont(hash.font || "");
+  } else {
+    let saved = ""; try { saved = localStorage.getItem("onepage_text") || ""; } catch (e) {}
+    src.value = saved || SAMPLE;
+    let tpl = "modern", ac = ACCENTS[0], font = "";
+    try { tpl = localStorage.getItem("onepage_tpl") || tpl; ac = localStorage.getItem("onepage_accent") || ac; font = localStorage.getItem("onepage_font") || ""; } catch (e) {}
+    setTemplate(tpl); setAccent(ac); setFont(font);
+  }
+  setEditorWidthPercent(editWidth, false);
+  setEditorFontSize(editFont, false);
+  setResumeZoom(zoom, false);
+  rerender();
+  setTimeout(() => startTour(false), 350);
+}
+init();
+</script>
+</body>
+</html>
