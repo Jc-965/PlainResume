@@ -14,7 +14,7 @@ Onepage turns the resume you can already write in a text box into a clean, print
 [![Privacy](https://img.shields.io/badge/data-100%25%20in%20your%20browser-0ea5e9?style=flat-square)](#privacy-by-design)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ec4899?style=flat-square)](#contributing)
 
-<img src="assets/onepage-hero.png" alt="The Onepage editor showing plain text on the left and a live, formatted resume on the right" width="900">
+  <img src="onepage-hero.png" alt="The Onepage editor showing plain text on the left and a live, formatted resume on the right" width="900">
 
 <sub>Type or paste on the left. Watch a formatted, one page resume build itself on the right.</sub>
 
@@ -40,7 +40,7 @@ Most resume builders make you pour your experience into dozens of tiny inputs, t
 This is the part that feels like magic. Drop in something rough, with uneven spacing, lowercase labels, and dates glued to job titles. Onepage reads the structure and rebuilds it as a clean, aligned resume in real time.
 
 <div align="center">
-  <img src="assets/onepage-messy.png" alt="Messy unformatted text on the left becoming a clean Jake style resume on the right" width="860">
+  <img src="onepage-messy.png" alt="Messy unformatted text on the left becoming a clean Jake style resume on the right" width="860">
 </div>
 
 The text on the left can be as plain as this:
@@ -70,7 +70,7 @@ There is no special markup to memorize. A few light conventions, listed in [Writ
 - **Keyboard friendly and zoomable.** Adjust text size, zoom the page, or fit it to the pane.
 
 <div align="center">
-  <img src="assets/onepage-elegant.png" alt="The same resume rendered in the Elegant serif template next to its plain text source" width="880">
+  <img src="onepage-elegant.png" alt="The same resume rendered in the Elegant serif template next to its plain text source" width="880">
   <br>
   <sub>The same content, restyled in the Elegant template. The source text never changes.</sub>
 </div>
@@ -118,7 +118,7 @@ Because the app is static, you can host it for free in a couple of minutes on an
 - [Vercel](https://vercel.com)
 - [Cloudflare Pages](https://pages.cloudflare.com)
 
-Upload `index.html` (and the `assets` folder if you want the preview images) and you are live.
+Upload `index.html` and you are live.
 
 ## Writing tips
 
@@ -152,7 +152,6 @@ One nice side effect: bookmarking the page is a real save button. As long as you
 ```text
 .
 |-- index.html   # The whole app: markup, styles, parser, renderer, and samples
-|-- assets/      # Screenshots used in this README
 |-- README.md    # You are here
 `-- LICENSE      # MIT license
 ```

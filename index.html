@@ -309,28 +309,32 @@
     border-radius: 10px; font-size: 13.5px; font-weight: 600; opacity: 0; pointer-events: none; transition: .22s;
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
-  .tour-backdrop {
-    position: fixed; inset: 0; z-index: 80; display: none; pointer-events: none;
-    background: transparent;
+  .help-backdrop {
+    position: fixed; inset: 0; z-index: 80; display: none;
+    align-items: center; justify-content: center; padding: 24px;
+    background: rgba(4,7,12,.66);
   }
-  .tour-backdrop.show { display: block; }
-  .tour-spotlight {
-    position: fixed; border-radius: 14px; border: 2px solid rgba(155,166,255,.98);
-    box-shadow: 0 0 0 9999px rgba(4,7,12,.62), 0 0 0 5px rgba(125,140,255,.16), 0 0 34px rgba(125,140,255,.55);
-    transition: top .2s ease, left .2s ease, width .2s ease, height .2s ease;
-  }
-  .tour-card {
-    position: fixed; width: min(340px, calc(100vw - 28px)); padding: 14px;
-    border: 1px solid #566176; border-radius: 14px; color: var(--ink);
+  .help-backdrop.show { display: flex; }
+  .help-card {
+    display: flex; flex-direction: column;
+    width: min(560px, 100%); max-height: min(82vh, 720px);
+    border: 1px solid #566176; border-radius: 16px; color: var(--ink);
     background: linear-gradient(180deg, #1a2231, #101722);
-    box-shadow: 0 24px 70px -28px rgba(0,0,0,.98), 0 0 0 1px rgba(255,255,255,.05) inset; pointer-events: auto;
-    transition: top .2s ease, left .2s ease;
+    box-shadow: 0 24px 70px -28px rgba(0,0,0,.98), 0 0 0 1px rgba(255,255,255,.05) inset;
   }
-  .tour-card h3 { margin: 0 0 6px; font-size: 14px; }
-  .tour-card p { margin: 0; color: #c9d1df; font-size: 13px; line-height: 1.45; }
-  .tour-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 13px; }
-  .tour-progress { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
-  .tour-buttons { display: flex; gap: 7px; }
+  .help-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .help-head h2 { margin: 0; font-size: 16px; }
+  .help-close { background: transparent; border: 0; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; padding: 0 6px; border-radius: 8px; }
+  .help-close:hover { color: var(--ink); background: rgba(255,255,255,.07); }
+  .help-body { padding: 16px 18px; overflow-y: auto; font-size: 13.5px; line-height: 1.5; color: #c9d1df; }
+  .help-body p { margin: 0 0 10px; }
+  .help-body h3 { margin: 16px 0 6px; font-size: 11.5px; letter-spacing: .6px; text-transform: uppercase; color: #aeb8ff; }
+  .help-body ul { margin: 0 0 6px; padding-left: 18px; }
+  .help-body li { margin: 3px 0; }
+  .help-body strong { color: var(--ink); }
+  .help-body code { background: rgba(255,255,255,.09); padding: 1px 5px; border-radius: 5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: #e7ebf5; }
+  .help-example { background: #0c0f16; border: 1px solid rgba(255,255,255,.09); border-radius: 10px; padding: 12px 14px; margin: 4px 0 2px; white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.5; color: #d7deea; }
+  .help-foot { color: var(--muted); font-size: 12.5px; margin-top: 12px; }
   @media (max-width: 820px) {
     body { overflow: auto; }
     .main { grid-template-columns: 1fr; height: auto; padding: 8px; gap: 8px; }
@@ -345,7 +349,7 @@
   }
   @media print {
     body { overflow: visible; background: #fff; height: auto; }
-    .bar, .editor, .splitter, .pane-head, .toast, .tour-backdrop, .page-backgrounds, .page-spacer { display: none !important; }
+    .bar, .editor, .splitter, .pane-head, .toast, .help-backdrop, .page-backgrounds, .page-spacer { display: none !important; }
     .main { display: block; height: auto !important; min-height: 0 !important; padding: 0 !important; background: #fff !important; }
     .preview-pane { display: block; border: none; box-shadow: none; }
     .preview { overflow: visible; background: #fff; padding: 0; height: auto; }
@@ -398,7 +402,7 @@
       </select>
       <button id="share" aria-label="Copy a shareable link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copy link</button>
       <button class="primary" id="export" aria-label="Export to PDF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export PDF</button>
-      <button class="info-button" id="infoBtn" type="button" aria-label="Show how Onepage works" title="Show how Onepage works"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Info</button>
+      <button class="info-button" id="infoBtn" type="button" aria-label="How to write your resume" title="How to write your resume"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Info</button>
     </div>
   </div>
 
@@ -449,18 +453,60 @@
   </div>
 
   <div class="toast" id="toast"></div>
-  <div class="tour-backdrop" id="tour" aria-hidden="true">
-    <div class="tour-spotlight" id="tourSpot"></div>
-    <div class="tour-card" id="tourCard" role="dialog" aria-live="polite" aria-labelledby="tourTitle">
-      <h3 id="tourTitle"></h3>
-      <p id="tourBody"></p>
-      <div class="tour-actions">
-        <span class="tour-progress" id="tourProgress"></span>
-        <div class="tour-buttons">
-          <button class="ghost" id="tourSkip" type="button">Skip</button>
-          <button class="ghost" id="tourBack" type="button">Back</button>
-          <button class="primary" id="tourNext" type="button">Next</button>
-        </div>
+  <div class="help-backdrop" id="help" aria-hidden="true">
+    <div class="help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <div class="help-head">
+        <h2 id="helpTitle">How to write your resume</h2>
+        <button class="help-close" id="helpClose" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="help-body">
+        <p>Onepage formats plain text as you type. There is no syntax to learn, and messy spacing is fine. These light conventions just give the parser a clearer signal.</p>
+
+        <h3>Header</h3>
+        <ul>
+          <li>Put your <strong>name</strong> on the first line.</li>
+          <li>Put contact details on the next line, separated by <code>|</code>, for example <code>email | website | phone | city</code>.</li>
+          <li>A short line right after that becomes your headline or summary.</li>
+        </ul>
+
+        <h3>Sections</h3>
+        <ul>
+          <li>Start a section with its own heading line, such as <code>EXPERIENCE</code>, <code>PROJECTS</code>, <code>EDUCATION</code>, or <code>SKILLS</code>.</li>
+          <li>All caps or Title Case both work, with or without a trailing colon.</li>
+        </ul>
+
+        <h3>Jobs and projects</h3>
+        <ul>
+          <li>First line: <code>Role or Project | Dates</code></li>
+          <li>Second line: <code>Company | Location</code></li>
+          <li>Then one achievement per line, each starting with <code>-</code>.</li>
+        </ul>
+
+        <h3>Skills</h3>
+        <ul>
+          <li>Use <code>Label: comma, separated, values</code>, for example <code>Languages: TypeScript, Python, SQL</code>.</li>
+        </ul>
+
+        <h3>Dates and locations</h3>
+        <ul>
+          <li>Write dates any way you like, such as <code>May 2025 - Aug 2025</code> or <code>2024 - Present</code>. Onepage moves them into a clean right aligned column for you.</li>
+        </ul>
+
+        <h3>Example</h3>
+        <div class="help-example">Mira Vale
+mira.vale@example.com | code.example/mira | (555) 010-2486 | Portland, OR
+Product engineer focused on fast, friendly web tools
+
+EXPERIENCE
+Software Engineer | May 2025 - Present
+Northwind Labs | Remote
+- Cut dashboard load time 32% by caching repeated API calls
+- Shipped a release view used by 45 teammates
+
+SKILLS
+Languages: TypeScript, Python, SQL</div>
+
+        <p class="help-foot">Not sure where to start? Load a sample from the toolbar to see a finished resume next to the text that made it.</p>
       </div>
     </div>
   </div>
@@ -804,38 +850,6 @@ let curTpl = "modern", curAccent = ACCENTS[0], curFont = "";
 let resumeZoom = 1, editorFontSize = 15, layoutFrame = 0, draggingSplit = false;
 let lastCursorLine = 0;
 const PAGE_GAP = 28;
-const TOUR_STEPS = [
-  {
-    target: "#src",
-    title: "Paste anything resume-shaped",
-    body: "Drop in a finished resume, rough notes, or a messy LinkedIn-style paste. Onepage reads names, links, sections, dates, bullets, and short project notes."
-  },
-  {
-    target: "#sample",
-    title: "Try a sample",
-    body: "Use Load sample to see a polished example or a messy paste. It is a quick way to learn what the parser understands."
-  },
-  {
-    target: "#preview",
-    title: "Preview updates live",
-    body: "The right side is the formatted resume. Move your cursor on the left to center and flash the matching resume text; click resume text to jump back to its source line."
-  },
-  {
-    target: "#tpl",
-    title: "Pick the look",
-    body: "Switch templates, fonts, and accent colors from the top bar. The resume keeps the same content while the presentation changes."
-  },
-  {
-    target: "#share",
-    title: "Bookmark your version",
-    body: "Copy link puts the whole resume in the URL. Bookmark that copied link to keep this version saved."
-  },
-  {
-    target: "#export",
-    title: "Export when ready",
-    body: "Use Export PDF for a print-ready resume. The preview handles page spacing and zoom before you export."
-  }
-];
 
 function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
 function highlightLine(line) {
@@ -1106,85 +1120,14 @@ function setEditorWidthPercent(pct, persist = true) {
   schedulePaperLayout();
 }
 
-const tour = document.getElementById("tour");
-const tourSpot = document.getElementById("tourSpot");
-const tourCard = document.getElementById("tourCard");
-const tourTitle = document.getElementById("tourTitle");
-const tourBody = document.getElementById("tourBody");
-const tourProgress = document.getElementById("tourProgress");
-const tourBack = document.getElementById("tourBack");
-const tourNext = document.getElementById("tourNext");
-const tourSkip = document.getElementById("tourSkip");
-let tourIndex = 0, tourOpen = false;
-function visibleTarget(selector) {
-  const direct = document.querySelector(selector);
-  if (!direct) return null;
-  if (selector === "#sample") return customSelects.get(direct)?.wrap || direct;
-  if (selector === "#tpl") return customSelects.get(direct)?.wrap || direct;
-  return direct;
+const helpModal = document.getElementById("help");
+function openHelp() {
+  helpModal.classList.add("show");
+  helpModal.setAttribute("aria-hidden", "false");
 }
-function placeTourCard(rect) {
-  const pad = 14;
-  const cardW = Math.min(340, window.innerWidth - pad * 2);
-  const cardH = Math.min(240, Math.max(156, tourCard.offsetHeight || 172));
-  const gap = 16;
-  const spaces = {
-    bottom: window.innerHeight - rect.bottom,
-    top: rect.top,
-    right: window.innerWidth - rect.right,
-    left: rect.left
-  };
-  let side = "bottom";
-  if (spaces.bottom < cardH + gap && spaces.top > spaces.bottom) side = "top";
-  if (Math.max(spaces.left, spaces.right) > Math.max(spaces.top, spaces.bottom) && Math.max(spaces.left, spaces.right) > cardW + gap) {
-    side = spaces.right > spaces.left ? "right" : "left";
-  }
-  let left = rect.left + rect.width / 2 - cardW / 2;
-  let top = rect.bottom + gap;
-  if (side === "top") top = rect.top - cardH - gap;
-  if (side === "right") { left = rect.right + gap; top = rect.top + rect.height / 2 - cardH / 2; }
-  if (side === "left") { left = rect.left - cardW - gap; top = rect.top + rect.height / 2 - cardH / 2; }
-  left = clamp(left, pad, window.innerWidth - cardW - pad);
-  top = clamp(top, pad, window.innerHeight - cardH - pad);
-  tourCard.style.width = cardW + "px";
-  tourCard.style.left = left + "px";
-  tourCard.style.top = top + "px";
-}
-function showTourStep() {
-  const step = TOUR_STEPS[tourIndex];
-  const target = visibleTarget(step.target);
-  if (!target) return endTour(true);
-  target.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
-  requestAnimationFrame(() => {
-    const rect = target.getBoundingClientRect();
-    const pad = 10;
-    tourSpot.style.left = Math.max(8, rect.left - pad) + "px";
-    tourSpot.style.top = Math.max(8, rect.top - pad) + "px";
-    tourSpot.style.width = Math.min(window.innerWidth - 16, rect.width + pad * 2) + "px";
-    tourSpot.style.height = Math.min(window.innerHeight - 16, rect.height + pad * 2) + "px";
-    placeTourCard(rect);
-    tourTitle.textContent = step.title;
-    tourBody.textContent = step.body;
-    tourProgress.textContent = (tourIndex + 1) + " of " + TOUR_STEPS.length;
-    tourBack.disabled = tourIndex === 0;
-    tourNext.textContent = tourIndex === TOUR_STEPS.length - 1 ? "Done" : "Next";
-  });
-}
-function startTour(force = false) {
-  if (!force) {
-    try { if (localStorage.getItem("onepage_onboarded") === "1") return; } catch (e) {}
-  }
-  tourOpen = true;
-  tourIndex = 0;
-  tour.classList.add("show");
-  tour.setAttribute("aria-hidden", "false");
-  showTourStep();
-}
-function endTour(markSeen = true) {
-  tourOpen = false;
-  tour.classList.remove("show");
-  tour.setAttribute("aria-hidden", "true");
-  if (markSeen) { try { localStorage.setItem("onepage_onboarded", "1"); } catch (e) {} }
+function closeHelp() {
+  helpModal.classList.remove("show");
+  helpModal.setAttribute("aria-hidden", "true");
 }
 
 const customSelects = new Map();
@@ -1326,21 +1269,11 @@ document.addEventListener("click", e => {
   customSelects.forEach(api => { if (!api.wrap.contains(e.target)) api.close(); });
 });
 window.addEventListener("resize", () => closeCustomSelects());
-window.addEventListener("resize", () => { if (tourOpen) showTourStep(); });
-document.getElementById("infoBtn").addEventListener("click", () => startTour(true));
-tourNext.addEventListener("click", () => {
-  if (tourIndex >= TOUR_STEPS.length - 1) endTour(true);
-  else { tourIndex++; showTourStep(); }
-});
-tourBack.addEventListener("click", () => {
-  if (tourIndex > 0) { tourIndex--; showTourStep(); }
-});
-tourSkip.addEventListener("click", () => endTour(true));
+document.getElementById("infoBtn").addEventListener("click", openHelp);
+document.getElementById("helpClose").addEventListener("click", closeHelp);
+helpModal.addEventListener("click", e => { if (e.target === helpModal) closeHelp(); });
 document.addEventListener("keydown", e => {
-  if (!tourOpen) return;
-  if (e.key === "Escape") endTour(true);
-  if (e.key === "ArrowRight") tourNext.click();
-  if (e.key === "ArrowLeft" && tourIndex > 0) tourBack.click();
+  if (e.key === "Escape" && helpModal.classList.contains("show")) closeHelp();
 });
 
 function rerender(opts = {}) {
@@ -1612,7 +1545,6 @@ function init() {
   setEditorFontSize(editFont, false);
   setResumeZoom(zoom, false);
   rerender();
-  setTimeout(() => startTour(false), 350);
 }
 init();
 </script>
