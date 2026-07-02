@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PlainResume — Free Resume Builder, No Signup | Plain Text to PDF</title>
-<meta name="description" content="PlainResume is a free, open-source resume builder with no signup and no upload. Type or paste plain text and get a polished, ATS-friendly, print-ready PDF in seven templates. Everything runs in your browser — your data never leaves the page." />
+<title>PlainResume: Free Resume Builder, No Signup | Plain Text to PDF</title>
+<meta name="description" content="PlainResume is a free, open-source resume builder with no signup and no upload. Type or paste plain text and get a polished, ATS-friendly, print-ready PDF in seven templates. Everything runs in your browser, so your data never leaves the page." />
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <meta name="referrer" content="no-referrer" />
 <meta name="color-scheme" content="dark light" />
@@ -12,14 +12,14 @@
 <link rel="canonical" href="https://jc-965.github.io/PlainResume/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PlainResume" />
-<meta property="og:title" content="PlainResume — Free Resume Builder, No Signup" />
-<meta property="og:description" content="Type or paste plain text, get a polished one-page resume PDF. Free, open source, no account — it all runs in your browser." />
+<meta property="og:title" content="PlainResume: Free Resume Builder, No Signup" />
+<meta property="og:description" content="Type or paste plain text, get a polished one-page resume PDF. Free, open source, no account. It all runs in your browser." />
 <meta property="og:url" content="https://jc-965.github.io/PlainResume/" />
 <meta property="og:image" content="https://github.com/Jc-965/PlainResume/releases/download/v1.0.0/onepage-hero.png" />
 <meta property="og:image:alt" content="The PlainResume editor: plain text on the left, a live formatted resume on the right" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="PlainResume — Free Resume Builder, No Signup" />
-<meta name="twitter:description" content="Type or paste plain text, get a polished one-page resume PDF. Free, open source, no account — it all runs in your browser." />
+<meta name="twitter:title" content="PlainResume: Free Resume Builder, No Signup" />
+<meta name="twitter:description" content="Type or paste plain text, get a polished one-page resume PDF. Free, open source, no account. It all runs in your browser." />
 <meta name="twitter:image" content="https://github.com/Jc-965/PlainResume/releases/download/v1.0.0/onepage-hero.png" />
 <script type="application/ld+json">
 {
@@ -145,16 +145,28 @@
   .select-option.with-thumb { justify-content: flex-start; gap: 10px; padding: 8px 26px 8px 8px; white-space: normal; }
   .select-option.with-thumb .thumb-label { flex: 1; }
   .tpl-thumb {
-    flex: none; width: 84px; height: 108px; overflow: hidden; position: relative;
+    flex: none; width: 112px; height: 145px; overflow: hidden; position: relative;
     border-radius: 5px; background: #fff; border: 1px solid rgba(255,255,255,.16);
     box-shadow: 0 2px 10px rgba(0,0,0,.4);
   }
   .tpl-thumb .paper {
     position: absolute; left: 0; top: 0; margin: 0; width: 8.5in; min-height: 11in;
-    transform: scale(.1029); transform-origin: top left; pointer-events: none;
+    transform: scale(.13725); transform-origin: top left; pointer-events: none;
   }
   html[data-theme="light"] .tpl-thumb { border-color: rgba(15,23,42,.18); box-shadow: 0 2px 10px rgba(15,23,42,.2); }
-  .custom-select.tpl .select-menu { max-height: min(520px, calc(100vh - 96px)); }
+  .custom-select.tpl .select-menu { max-height: min(560px, calc(100vh - 96px)); }
+  .tpl-flyout {
+    display: none; position: absolute; z-index: 61; width: 306px; height: 396px; overflow: hidden;
+    border-radius: 10px; background: #fff; border: 1px solid #556176;
+    box-shadow: 0 24px 60px -24px rgba(0,0,0,.85);
+  }
+  .tpl-flyout.show { display: block; }
+  .tpl-flyout .paper {
+    position: absolute; left: 0; top: 0; margin: 0; width: 8.5in; min-height: 11in;
+    transform: scale(.375); transform-origin: top left; pointer-events: none;
+  }
+  html[data-theme="light"] .tpl-flyout { border-color: #c3cddc; box-shadow: 0 24px 60px -28px rgba(15,23,42,.4); }
+  @media (max-width: 820px) { .tpl-flyout { display: none !important; } }
   .dots { display: flex; gap: 6px; padding: 0 2px; }
   .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0; transition: .15s; }
   .dot:hover { transform: scale(1.12); }
@@ -453,7 +465,9 @@
   }
   @media print {
     body { overflow: visible; background: #fff; height: auto; }
-    .bar, .editor, .splitter, .pane-head, .toast, .help-backdrop, .page-backgrounds, .page-spacer { display: none !important; }
+    .bar, .editor, .splitter, .pane-head, .toast, .help-backdrop, .page-backgrounds { display: none !important; }
+    /* Page spacers stay visible: they reproduce the exact page cuts shown in the preview. */
+    .page-spacer { display: block !important; }
     .main { display: block; height: auto !important; min-height: 0 !important; padding: 0 !important; background: #fff !important; }
     .preview-pane { display: block; border: none; box-shadow: none; }
     .preview { overflow: visible; background: #fff; padding: 0; height: auto; }
@@ -506,7 +520,7 @@
         <option value="messy">Messy paste (no formatting)</option>
       </select>
       <button id="share" aria-label="Copy a shareable link"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Copy link</button>
-      <button class="primary" id="export" aria-label="Download as PDF" title="Opens your browser's print dialog — choose 'Save as PDF' as the destination"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF</button>
+      <button class="primary" id="export" aria-label="Download as PDF" title="Opens your browser's print dialog. Choose 'Save as PDF' as the destination"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download PDF</button>
       <button class="info-button" id="infoBtn" type="button" aria-label="How to write your resume" title="How to write your resume"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Info</button>
     </div>
   </div>
@@ -1060,7 +1074,7 @@ function jumpEditorToLine(lineNo) {
 }
 function schedulePaperLayout() {
   cancelAnimationFrame(layoutFrame);
-  layoutFrame = requestAnimationFrame(updatePaperLayout);
+  layoutFrame = requestAnimationFrame(() => updatePaperLayout());
 }
 function clearPageLayout() {
   paper.querySelectorAll(".page-spacer").forEach(el => el.remove());
@@ -1107,12 +1121,12 @@ function entryHeaderChildren(entry) {
 function entryBulletChildren(entry) {
   return Array.from(entry.querySelectorAll(":scope > ul > li")).filter(el => !el.classList.contains("page-spacer"));
 }
-function paginatePaper(pageH) {
+function paginatePaper(pageH, gap) {
   const styles = getComputedStyle(paper);
   const topPad = parseFloat(styles.paddingTop) || 56;
   const bottomPad = parseFloat(styles.paddingBottom) || topPad;
   const pageBody = Math.max(1, pageH - topPad - bottomPad);
-  const pageStride = pageH + PAGE_GAP;
+  const pageStride = pageH + gap;
 
   for (const child of Array.from(paper.children)) {
     if (child.classList.contains("page-backgrounds") || child.classList.contains("page-spacer")) continue;
@@ -1154,31 +1168,31 @@ function paginatePaper(pageH) {
   }
   return false;
 }
-function drawPageSheets(pageH, pages) {
+function drawPageSheets(pageH, pages, gap) {
   const backgrounds = document.createElement("div");
   backgrounds.className = "page-backgrounds";
   for (let i = 0; i < pages; i++) {
     const sheet = document.createElement("div");
     sheet.className = "page-sheet";
-    sheet.style.top = (i * (pageH + PAGE_GAP)) + "px";
+    sheet.style.top = (i * (pageH + gap)) + "px";
     sheet.style.height = pageH + "px";
     backgrounds.appendChild(sheet);
   }
   paper.prepend(backgrounds);
 }
-function updatePaperLayout() {
+function updatePaperLayout(gap = PAGE_GAP) {
   clearPageLayout();
 
   const pageH = Math.max(1, Math.round((paper.offsetWidth || 816) * 11 / 8.5));
   for (let pass = 0; pass < 8; pass++) {
-    if (!paginatePaper(pageH)) break;
+    if (!paginatePaper(pageH, gap)) break;
   }
   const contentH = Math.max(paper.scrollHeight, paper.offsetHeight, pageH);
-  const pages = Math.max(1, Math.ceil((contentH + PAGE_GAP) / (pageH + PAGE_GAP)));
-  const totalH = pages * pageH + (pages - 1) * PAGE_GAP;
+  const pages = Math.max(1, Math.ceil((contentH + gap) / (pageH + gap)));
+  const totalH = pages * pageH + (pages - 1) * gap;
   paper.style.minHeight = totalH + "px";
   if (pageCountEl) pageCountEl.textContent = pages + " " + (pages === 1 ? "page" : "pages");
-  drawPageSheets(pageH, pages);
+  drawPageSheets(pageH, pages, gap);
 
   const baseW = paperWrap ? paperWrap.offsetWidth : paper.offsetWidth;
   const baseH = Math.max(totalH, paperWrap ? paperWrap.offsetHeight : paper.offsetHeight);
@@ -1272,6 +1286,32 @@ function enhanceSelect(select, opts = {}) {
   btn.setAttribute("aria-controls", menu.id);
   wrap.append(btn, menu);
 
+  let flyout = null;
+  if (opts.thumbnails) {
+    flyout = document.createElement("div");
+    flyout.className = "tpl-flyout";
+    flyout.setAttribute("aria-hidden", "true");
+    wrap.appendChild(flyout);
+  }
+  function updateFlyout() {
+    if (!flyout) return;
+    const n = nodes[active];
+    if (!n || !wrap.classList.contains("open") || !thumbHTML) { flyout.classList.remove("show"); return; }
+    const mini = document.createElement("div");
+    mini.className = "paper " + n.dataset.value;
+    if (curFont) mini.style.fontFamily = curFont;
+    mini.innerHTML = thumbHTML;
+    flyout.innerHTML = "";
+    flyout.appendChild(mini);
+    const menuR = menu.getBoundingClientRect();
+    const wrapR = wrap.getBoundingClientRect();
+    const fw = 306 + 10;
+    if (menuR.right + fw > window.innerWidth - 8) flyout.style.left = (menuR.left - wrapR.left - fw) + "px";
+    else flyout.style.left = (menuR.right - wrapR.left + 10) + "px";
+    flyout.style.top = (menuR.top - wrapR.top) + "px";
+    flyout.classList.add("show");
+  }
+
   let nodes = [], active = -1, thumbHTML = "";
   const addOption = opt => {
     if (opt.hidden) return;
@@ -1326,6 +1366,7 @@ function enhanceSelect(select, opts = {}) {
     nodes.forEach((n, i) => n.classList.toggle("active", i === active));
     btn.setAttribute("aria-activedescendant", nodes[active].id);
     nodes[active].scrollIntoView({ block: "nearest" });
+    updateFlyout();
   }
   function sync() {
     const selected = select.selectedOptions[0];
@@ -1352,6 +1393,7 @@ function enhanceSelect(select, opts = {}) {
     btn.setAttribute("aria-expanded", "false");
     btn.removeAttribute("aria-activedescendant");
     active = -1;
+    if (flyout) flyout.classList.remove("show");
   }
   function choose(v) {
     select.value = v;
@@ -1480,6 +1522,16 @@ function setTheme(t, persist = true) {
 document.getElementById("themeToggle").addEventListener("click", () => {
   setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
 });
+/* Follow the browser's color scheme until the user picks a theme themselves. */
+if (window.matchMedia) {
+  const systemTheme = window.matchMedia("(prefers-color-scheme: light)");
+  const followSystem = () => {
+    let chosen = "";
+    try { chosen = localStorage.getItem("plainresume_theme") || ""; } catch (e) {}
+    if (!chosen) setTheme(systemTheme.matches ? "light" : "dark", false);
+  };
+  if (systemTheme.addEventListener) systemTheme.addEventListener("change", followSystem);
+}
 tplSel.addEventListener("change", () => setTemplate(tplSel.value));
 src.addEventListener("input", () => rerender());
 src.addEventListener("scroll", syncHighlightScroll);
@@ -1496,7 +1548,10 @@ paper.addEventListener("click", e => {
 });
 const exportBtn = document.getElementById("export");
 function preparePrint() {
-  clearPageLayout();
+  /* Re-paginate with no visual gap between pages so the printed page cuts
+     land exactly where the preview shows them. */
+  cancelAnimationFrame(layoutFrame);
+  updatePaperLayout(0);
   paper.style.minHeight = "";
   paperStage.style.width = "";
   paperStage.style.height = "";
@@ -1676,9 +1731,9 @@ function init() {
   /* size caps so a crafted share link can't freeze the tab */
   const rawHash = location.hash.length > 1 && location.hash.length < 200000 ? location.hash.slice(1) : "";
   const hash = rawHash ? dec(rawHash) : null;
-  let zoom = 1, editFont = 15, editWidth = 44, theme = "dark";
+  let zoom = 1, editFont = 15, editWidth = 44, theme = "";
   try {
-    theme = localStorage.getItem("plainresume_theme") || theme;
+    theme = localStorage.getItem("plainresume_theme") || "";
     zoom = Number(localStorage.getItem("plainresume_zoom")) || zoom;
     editFont = Number(localStorage.getItem("plainresume_editor_font")) || editFont;
     editWidth = Number(localStorage.getItem("plainresume_editor_w")) || editWidth;
@@ -1695,6 +1750,7 @@ function init() {
     try { tpl = localStorage.getItem("plainresume_tpl") || tpl; ac = localStorage.getItem("plainresume_accent") || ac; font = localStorage.getItem("plainresume_font") || ""; } catch (e) {}
     setTemplate(tpl); setAccent(ac); setFont(font);
   }
+  if (!theme) theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
   setTheme(theme, false);
   setEditorWidthPercent(editWidth, false);
   setEditorFontSize(editFont, false);
